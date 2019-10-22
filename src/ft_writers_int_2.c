@@ -27,7 +27,7 @@ int			ft_write_x(t_printer *printer)
 	return (written + ft_write_nondecimal(printer, "0123456789abcdef"));
 }
 
-int			ft_write_X(t_printer *printer)
+int			ft_write_up_x(t_printer *printer)
 {
 	int		written;
 
