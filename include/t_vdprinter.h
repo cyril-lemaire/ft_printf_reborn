@@ -17,6 +17,6 @@ typedef struct	s_vdprinter
 
 t_vdprinter*	ft_vdprinter_new(int fd, va_list *args);
 int				ft_vdprinter_init(t_vdprinter *printer, int fd, va_list *args);
-void			ft_vdprinter_del(void *this);
+void			ft_vdprinter_del(t_vdprinter *this);
 
 #endif

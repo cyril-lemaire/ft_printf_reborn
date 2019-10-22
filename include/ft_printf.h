@@ -8,9 +8,12 @@
 # define EALLOC		-1
 # define EWRITE		-2
 # define EFORMAT	-3
-/*
-** #define FT_PRINTF_DEBUG
-*/
+#define FT_PRINTF_DEBUG
+
+#ifdef FT_PRINTF_DEBUG
+#include <stdio.h>
+#include <limits.h>
+#endif
 
 int			ft_printf(const char *format, ...);
 int			ft_vprintf(const char *format, va_list args);
