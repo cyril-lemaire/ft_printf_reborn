@@ -3,7 +3,6 @@
 # include "t_printer.h"
 # include "libft.h"
 
-struct s_vdprinter;
 typedef void	(*t_vdprinter_del)(void *this);
 
 typedef struct	s_vdprinter
