@@ -6,7 +6,7 @@
 #    By: clemaire <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/11/13 16:35:50 by clemaire          #+#    #+#              #
-#    Updated: 2019/10/22 18:52:30 by cyrlemai         ###   ########.fr        #
+#    Updated: 2019/10/24 14:20:57 by cyrlemai         ###   ########.fr        #
 #                                                                              #
 #******************************************************************************#
 
@@ -104,7 +104,7 @@ test: $(TEST_NAME)
 	./$<
 
 $(TEST_NAME): $(TEST_FILES) $(NAME)
-	$(CC) -I$(INCL_DIR) -I$(LIBFT_DIR) -L. -lftprintf -o $@ $(filter %.c,$^)
+	$(CC) -Weverything -fsanitize=address -I$(INCL_DIR) -I$(LIBFT_DIR) -L. -lftprintf -o $@ $(filter %.c,$^)
 
 obj: $(OBJ)
 
