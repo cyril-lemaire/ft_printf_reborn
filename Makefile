@@ -6,7 +6,7 @@
 #    By: clemaire <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/11/13 16:35:50 by clemaire          #+#    #+#              #
-#    Updated: 2019/10/24 14:20:57 by cyrlemai         ###   ########.fr        #
+#    Updated: 2019/10/25 16:01:18 by cyrlemai         ###   ########.fr        #
 #                                                                              #
 #******************************************************************************#
 
@@ -61,7 +61,7 @@ LIBFT_OBJ :=	$(LIBFT_M_SHORT:%=$(LIBFT_OBJ_DIR)/ft_%.o)	\
 				$(LIBFT_B_SHORT:%=$(LIBFT_OBJ_DIR)/ft_%_bonus.o)
 
 TEST_NAME :=	printf_tester
-TEST_FILES :=	main.c
+TEST_FILES :=	tester_main.c
 
 all: $(NAME)
 
@@ -101,7 +101,6 @@ fclean: clean
 re: fclean all
 
 test: $(TEST_NAME)
-	./$<
 
 $(TEST_NAME): $(TEST_FILES) $(NAME)
 	$(CC) -Weverything -fsanitize=address -I$(INCL_DIR) -I$(LIBFT_DIR) -L. -lftprintf -o $@ $(filter %.c,$^)

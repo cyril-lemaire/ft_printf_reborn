@@ -6,7 +6,7 @@
 /*   By: cyrlemai <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/21 18:50:46 by cyrlemai          #+#    #+#             */
-/*   Updated: 2019/10/22 18:53:23 by cyrlemai         ###   ########.fr       */
+/*   Updated: 2019/10/25 16:08:13 by cyrlemai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,9 +30,7 @@ int				ft_vdprintf(int fd, const char *format, va_list args)
 		return (EALLOC);
 	ret_val = ft_print(format, &(printer->super));
 	va_end(args_cpy);
-	printf("coucou\n"); fflush(stdout);
 	printer->del(printer);
-	printf("coucou 2\n"); fflush(stdout);
 	return (ret_val);
 }
 /*
