@@ -6,7 +6,7 @@
 /*   By: cyrlemai <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/21 15:35:04 by cyrlemai          #+#    #+#             */
-/*   Updated: 2019/10/21 18:53:14 by cyrlemai         ###   ########.fr       */
+/*   Updated: 2019/10/25 18:22:19 by cyrlemai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,15 +24,15 @@ static int		ft_read_flags(const char *format, t_printer *printer)
 	read_size = 0;
 	while (1)
 	{
-		if (format[0] == '-')
+		if (format[read_size] == '-')
 			flag_ptr = &(printer->flags.minus);
-		else if (format[0] == '+')
+		else if (format[read_size] == '+')
 			flag_ptr = &(printer->flags.plus);
-		else if (format[0] == '#')
+		else if (format[read_size] == '#')
 			flag_ptr = &(printer->flags.hash);
-		else if (format[0] == '0')
+		else if (format[read_size] == '0')
 			flag_ptr = &(printer->flags.zero);
-		else if (format[0] == ' ')
+		else if (format[read_size] == ' ')
 			flag_ptr = &(printer->flags.space);
 		else
 			break ;
@@ -103,19 +103,13 @@ static int		ft_read_size(const char *format, t_printer *printer)
 int				ft_read_conversion(const char *format, t_printer *printer)
 {
 	int		read_size;
-	int		prev_read;
 
 	ft_bzero(&printer->flags, sizeof(printer->flags));
 	read_size = 1;
-	prev_read = 0;
-	while (read_size > prev_read)
-	{
-		prev_read = read_size;
-		read_size += ft_read_flags(format + read_size, printer);
-		read_size += ft_read_width(format + read_size, printer);
-		read_size += ft_read_prec(format + read_size, printer);
-		read_size += ft_read_size(format + read_size, printer);
-	}
+	read_size += ft_read_flags(format + read_size, printer);
+	read_size += ft_read_width(format + read_size, printer);
+	read_size += ft_read_prec(format + read_size, printer);
+	read_size += ft_read_size(format + read_size, printer);
 	if ((printer->type = format[read_size]) != '\0')
 		++read_size;
 	return (read_size);

@@ -8,7 +8,7 @@
 # define EALLOC		-1
 # define EWRITE		-2
 # define EFORMAT	-3
-#define FT_PRINTF_DEBUG
+//#define FT_PRINTF_DEBUG
 
 #ifdef FT_PRINTF_DEBUG
 #include <stdio.h>
@@ -25,6 +25,9 @@ int			ft_read_conversion(const char *format, t_printer *printer);
 int			ft_write_conversion(t_printer *printer);
 uintmax_t	ft_imaxabs(intmax_t n);
 int			ft_tools_atoi_light(const char *str, int *ans);
+int			ft_tools_putstr(t_printer *printer, const void *str, size_t size);
+int			ft_tools_write_str(t_printer *printer, const void *str,
+				size_t str_len, t_printer_putstr putstr);
 int			ft_write_uimax(t_printer *printer, uintmax_t n, int is_neg,
 				const char *base_repr);
 int			ft_write_pct(t_printer *printer);

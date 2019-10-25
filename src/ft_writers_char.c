@@ -6,7 +6,7 @@
 /*   By: cyrlemai <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/22 16:20:36 by cyrlemai          #+#    #+#             */
-/*   Updated: 2019/10/22 16:20:49 by cyrlemai         ###   ########.fr       */
+/*   Updated: 2019/10/25 18:40:30 by cyrlemai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ static int	ft_tools_putwc(t_printer *printer, wchar_t wc)
 
 	if ((f_ret = ft_wctomb(s, wc)) < 1)
 		return (EFORMAT);
-	return (printer->write(printer, s, f_ret));
+	return (ft_tools_write_str(printer, s, f_ret, ft_tools_putstr));
 }
 
 int			ft_write_c(t_printer *printer)
@@ -34,7 +34,7 @@ int			ft_write_c(t_printer *printer)
 	if (ft_strchr("lwL", printer->size) != NULL && printer->size != '\0')
 		return (ft_write_up_c(printer));
 	c = (char)va_arg(*printer->args, int);
-	return (printer->write(printer, &c, sizeof(char)));
+	return (ft_tools_write_str(printer, &c, sizeof(char), ft_tools_putstr));
 }
 
 int			ft_write_up_c(t_printer *printer)

@@ -1,8 +1,20 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_writers_other.c                                 :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: cyrlemai <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2019/10/25 18:46:11 by cyrlemai          #+#    #+#             */
+/*   Updated: 2019/10/25 18:46:15 by cyrlemai         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "ft_printf.h"
 
 int			ft_write_pct(t_printer *printer)
 {
-	return (printer->write(printer, "%", 1));
+	return (ft_tools_write_str(printer, "%", 1, ft_tools_putstr));
 }
 
 int			ft_write_up_b(t_printer *printer)

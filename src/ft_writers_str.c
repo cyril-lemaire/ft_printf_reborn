@@ -6,7 +6,7 @@
 /*   By: cyrlemai <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/22 16:51:47 by cyrlemai          #+#    #+#             */
-/*   Updated: 2019/10/25 16:12:08 by cyrlemai         ###   ########.fr       */
+/*   Updated: 2019/10/25 18:32:45 by cyrlemai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,17 +14,6 @@
 #include "libft.h"
 #include <stdint.h>
 #include <stdio.h>	//debug only
-
-int			ft_tools_putstr(t_printer *printer, const void *str, size_t size)
-{
-	const char	*s = (const char*)str;
-	size_t		i;
-
-	i = ft_strnlen(s, size);
-	while(i < size && s[i] != '\0')
-		++i;
-	return (printer->write(printer, s, i));
-}
 
 static int	ft_tools_putwstr(t_printer *printer, const void *str, size_t size)
 {
@@ -50,8 +39,19 @@ static int	ft_tools_putwstr(t_printer *printer, const void *str, size_t size)
 	return ((int)written);
 }
 
-static int	ft_tools_write_str(t_printer *printer, const void *str,
-				size_t str_len, t_printer_putstr putstr)
+int			ft_tools_putstr(t_printer *printer, const void *str, size_t size)
+{
+	const char	*s = (const char*)str;
+	size_t		i;
+
+	i = ft_strnlen(s, size);
+	while(i < size && s[i] != '\0')
+		++i;
+	return (printer->write(printer, s, i));
+}
+
+int			ft_tools_write_str(t_printer *printer, const void *str,
+					size_t str_len, t_printer_putstr putstr)
 {
 	int		ret_val;
 	int		f_ret;
@@ -88,7 +88,6 @@ int			ft_write_s(t_printer *printer)
 	if (printer->size != '\0' && ft_strchr("lwL", printer->size) != NULL)
 		return (ft_write_up_s(printer));
 	arg = va_arg(*printer->args, char*);
-	printf("Coucou depuis 'ft_write_s', arg is %s\n", arg);
 	if (arg == NULL)
 		str_len = 0;
 	else if (printer->flags.prec)
