@@ -15,13 +15,10 @@ t_vdprinter*	ft_vdprinter_new(int fd, va_list *args)
 	return (printer);
 }
 
-void			ft_vdprinter_del(void *raw_this)
+void			ft_vdprinter_del(t_vdprinter *this)
 {
-	t_vdprinter	*this;
-
-	if (raw_this != NULL)
+	if (this != NULL)
 	{
-		this = (t_vdprinter*)raw_this;
 		free(this->mem);
 		free(this);
 	}
