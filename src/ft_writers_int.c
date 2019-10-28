@@ -6,7 +6,7 @@
 /*   By: cyrlemai <cyrlemai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/25 21:01:15 by cyrlemai          #+#    #+#             */
-/*   Updated: 2019/10/28 03:58:22 by cyrlemai         ###   ########.fr       */
+/*   Updated: 2019/10/28 04:14:39 by cyrlemai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,8 +46,8 @@ int			ft_write_signed(t_printer *printer, const char *header,
 				arg < 0 ? "-" : header, base));
 }
 
-int			ft_write_unsigned(t_printer *printer, const char *base,
-				const char *header)
+int			ft_write_unsigned(t_printer *printer, const char *header,
+				const char *base)
 {
 	uintmax_t	arg;
 

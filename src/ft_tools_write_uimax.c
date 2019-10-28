@@ -22,18 +22,24 @@ static size_t		ft_get_n_len(t_printer *printer, uintmax_t n,
 {
 	size_t	res;
 	size_t	base_len;
+	size_t	header_len;
+	size_t	min_len;
 
 	if (n == 0)
 		return ((printer->flags.prec) ? (size_t)printer->prec : 0);
-	res = 1 + ft_strlen(header);
 	base_len = ft_strlen(base);
+	header_len = ft_strlen(header);
+	min_len = (printer->flags.prec && (size_t)printer->prec > header_len)
+		? (size_t)printer->prec - header_len : 0;
+	res = 1;
 	n /= base_len;
 	while (n > 0)
 	{
 		++res;
 		n /= base_len;
 	}
-	return (res);
+	printf("min len %zu, raw len %zu\n", min_len, res);
+	return ((res < min_len) ? min_len : res);
 }
 
 static int			ft_tools_putuintmax(t_printer *printer, uintmax_t n,
@@ -66,11 +72,11 @@ int					ft_write_uintmax(t_printer *printer, uintmax_t n,
 	filler_len = (printer->flags.width && (size_t)printer->width > n_len)
 			? printer->width - n_len : 0;
     ret_val = 0;
-	if (filler_len > 0 && filler == '0')
+	if (filler_len > 0 && filler == ' ' && !printer->flags.minus)
 		ret_val += printer->repeat(printer, filler, filler_len);
 	if (n != 0)
 		ret_val += printer->write(printer, header, ft_strlen(header));
-	if (filler_len > 0 && filler == ' ' && !printer->flags.minus)
+	if (filler_len > 0 && filler == '0')
 		ret_val += printer->repeat(printer, filler, filler_len);
 	ret_val += ft_tools_putuintmax(printer, n, n_len, base);
 	if (filler_len > 0 && printer->flags.minus)
