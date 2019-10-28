@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_writers_int.c                                   :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: cyrlemai <cyrlemai@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2019/10/25 21:01:15 by cyrlemai          #+#    #+#             */
+/*   Updated: 2019/10/28 03:58:22 by cyrlemai         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "ft_printf.h"
 #include "libft.h"
 #include <stdarg.h>
@@ -5,14 +17,15 @@
 #include <unistd.h>
 #include <stdint.h>
 
-int			ft_write_signed(t_printer *printer, const char *base)
+int			ft_write_signed(t_printer *printer, const char *header,
+				const char *base)
 {
 	intmax_t	arg;
 
 	if (printer->size == 'l')
-		arg = (intmax_t)va_arg(*printer->args, long);
+		arg = (intmax_t)va_arg(*printer->args, long int);
 	else if (printer->size == 'L')
-		arg = (intmax_t)va_arg(*printer->args, long long);
+		arg = (intmax_t)va_arg(*printer->args, long long int);
 	else if (printer->size == 'h')
 		arg = (intmax_t)(short)va_arg(*printer->args, int);
 	else if (printer->size == 'H')
@@ -29,13 +42,17 @@ int			ft_write_signed(t_printer *printer, const char *base)
 		arg = (intmax_t)va_arg(*printer->args, ptrdiff_t);
 	else
 		arg = (intmax_t)va_arg(*printer->args, int);
-	return (ft_write_uimax(printer, ft_imaxabs(arg), arg < 0, base));
+	return (ft_write_uintmax(printer, (uintmax_t)((arg < 0) ? -arg : arg),
+				arg < 0 ? "-" : header, base));
 }
 
-int			ft_write_unsigned(t_printer *printer, const char *base)
+int			ft_write_unsigned(t_printer *printer, const char *base,
+				const char *header)
 {
 	uintmax_t	arg;
 
+	printer->flags.plus = 0;
+	printer->flags.space = 0;
 	if (printer->size == 'l')
 		arg = (uintmax_t)va_arg(*printer->args, unsigned long);
 	else if (printer->size == 'L')
@@ -52,15 +69,30 @@ int			ft_write_unsigned(t_printer *printer, const char *base)
 		arg = (uintmax_t)va_arg(*printer->args, ptrdiff_t);
 	else
 		arg = (uintmax_t)va_arg(*printer->args, unsigned);
-	return (ft_write_uimax(printer, arg, 0, base));
+	return (ft_write_uintmax(printer, arg, header, base));
 }
+
+/*
+**	Note: header defines the header's value if formatted value is positive.
+**	Negative values will always have a "-" header in signed formats.
+*/
 
 int			ft_write_d(t_printer *printer)
 {
-	return (ft_write_signed(printer, "0123456789"));
+	char	*header;
+
+	if (printer->flags.plus)
+		header = "+";
+	else if (printer->flags.space)
+		header = " ";
+	else
+		header = "";
+	return (ft_write_signed(printer, header, "0123456789"));
 }
 
 int			ft_write_u(t_printer *printer)
 {
-	return (ft_write_unsigned(printer, "0123456789"));
+	const char	*header = "";
+
+	return (ft_write_unsigned(printer, header, "0123456789"));
 }

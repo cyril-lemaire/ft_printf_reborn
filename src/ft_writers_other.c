@@ -6,7 +6,7 @@
 /*   By: cyrlemai <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/25 18:46:11 by cyrlemai          #+#    #+#             */
-/*   Updated: 2019/10/25 18:46:15 by cyrlemai         ###   ########.fr       */
+/*   Updated: 2019/10/28 04:01:30 by cyrlemai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,10 +21,11 @@ int			ft_write_up_b(t_printer *printer)
 {
 	char	*arg;
 
-	arg = va_arg(*printer->args, char*);
+	arg = va_arg(*printer->args, void*);
 	if (arg == NULL)
-		return (printer->write(printer, "(null)", sizeof("(null)") - 1));
-	if (printer->flags.width)
+		return (ft_tools_write_str(printer, "(null)", sizeof("(null)") - 1,
+					ft_tools_putstr));
+	if (printer->flags.width && printer->width > 0)
 		return (printer->write(printer, arg, printer->width));
 	return (0);
 }
@@ -38,7 +39,8 @@ int			ft_write_p(t_printer *printer)
 	printer->flags.space = 0;
 	arg = va_arg(*printer->args, void*);
 	if (arg == NULL)
-		return (printer->write(printer, "(nil)", sizeof("(nil)") - 1));
-	return (printer->write(printer, "0x", sizeof("0x") - 1) +
-			ft_write_uimax(printer, (uintmax_t)arg, 0, "0123456789abcdef"));
+		return (ft_tools_write_str(printer, "(nil)", sizeof("(nil)") - 1,
+					ft_tools_putstr));
+	return (ft_write_uintmax(printer, (uintmax_t)arg, "0x",
+				"0123456789abcdef"));
 }
