@@ -4,6 +4,7 @@
 # include <stdarg.h>
 # include <stddef.h>
 # include <stdint.h>
+# include <stdio.h>
 # define PRINTF_TYPES "%diuboxXcCsSpfgGaAB"
 # define EALLOC		-1
 # define EWRITE		-2

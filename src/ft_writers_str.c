@@ -6,7 +6,7 @@
 /*   By: cyrlemai <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/22 16:51:47 by cyrlemai          #+#    #+#             */
-/*   Updated: 2019/10/25 18:32:45 by cyrlemai         ###   ########.fr       */
+/*   Updated: 2019/10/30 12:22:24 by cyrlemai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,8 @@ int			ft_tools_write_str(t_printer *printer, const void *str,
 	size_t	filler_len;
 
 	if (str == NULL)
-		return (printer->write(printer, "(null)", sizeof("(null)") - 1));
+		str = "(null)";
+	printf("printing string [%.*s] (prec %d) w: %d flags %s%s%s%s%s", (int)str_len, (char*)str, printer->flags.prec ? printer->prec : -1, printer->flags.width ? printer->width : -1, printer->flags.minus ? "-" : "", printer->flags.space ? " " : "", printer->flags.hash ? "#" : "", printer->flags.plus ? "+" : "", printer->flags.zero ? "0" : ""); fflush(stdout);
 	ret_val = 0;
 	f_ret = 0;
 	filler_len = printer->flags.width ? ft_max(0, printer->width - str_len) : 0;
