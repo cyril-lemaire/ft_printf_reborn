@@ -6,7 +6,7 @@
 /*   By: cyrlemai <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/22 16:51:47 by cyrlemai          #+#    #+#             */
-/*   Updated: 2019/10/25 18:32:45 by cyrlemai         ###   ########.fr       */
+/*   Updated: 2019/10/31 18:59:35 by cyrlemai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,71 +41,69 @@ static int	ft_tools_putwstr(t_printer *printer, const void *str, size_t size)
 
 int			ft_tools_putstr(t_printer *printer, const void *str, size_t size)
 {
-	const char	*s = (const char*)str;
-	size_t		i;
-
-	i = ft_strnlen(s, size);
-	while(i < size && s[i] != '\0')
-		++i;
-	return (printer->write(printer, s, i));
+	return (printer->write(printer, str, size));
 }
 
 int			ft_tools_write_str(t_printer *printer, const void *str,
-					size_t str_len, t_printer_putstr putstr)
+					size_t len, t_printer_putstr putstr)
 {
 	int		ret_val;
 	int		f_ret;
 	size_t	filler_len;
 
-	if (str == NULL)
-		return (printer->write(printer, "(null)", sizeof("(null)") - 1));
 	ret_val = 0;
 	f_ret = 0;
-	filler_len = printer->flags.width ? ft_max(0, printer->width - str_len) : 0;
-#ifdef FT_PRINTF_DEBUG
-	printf("filler: %zd, strlen: %zd\n", filler_len, str_len);fflush(stdout);
-#endif
+	filler_len = (printer->flags.width && (size_t)printer->width > len)
+		? printer->width : len;
 	if (filler_len > 0 && !printer->flags.minus)
 	{
 		if ((f_ret = printer->repeat(printer, ' ', filler_len)) < 0)
 			return (f_ret);
 		ret_val += f_ret;
 	}
-	if ((f_ret = putstr(printer, str, str_len)) < 0)
+	if ((f_ret = putstr(printer, str, len)) < 0)
 		return (f_ret);
 	ret_val += f_ret;
 	if (filler_len && printer->flags.minus)
-		return (((f_ret = printer->repeat(printer, ' ', filler_len)) < 0) ?	\
-			f_ret : ret_val + f_ret);
+		return (((f_ret = printer->repeat(printer, ' ', filler_len)) < 0)
+				? f_ret : ret_val + f_ret);
 	return (ret_val);
 }
 
 int			ft_write_s(t_printer *printer)
 {
 	char				*arg;
-	size_t				str_len;
+	size_t				len;
 
 	if (printer->size != '\0' && ft_strchr("lwL", printer->size) != NULL)
 		return (ft_write_up_s(printer));
 	arg = va_arg(*printer->args, char*);
 	if (arg == NULL)
-		str_len = 0;
+	{
+		len = (printer->flags.prec && printer->prec < 6) ? printer->prec : 6;
+		return (ft_tools_write_str(printer, "(null)", len, ft_tools_putstr));
+	}
 	else if (printer->flags.prec)
-		str_len = ft_strnlen(arg, printer->prec);
+		len = ft_strnlen(arg, printer->prec);
 	else
-		str_len = ft_strlen(arg);
-	return (ft_tools_write_str(printer, arg, str_len, ft_tools_putstr));
+		len = ft_strlen(arg);
+	return (ft_tools_write_str(printer, arg, len, ft_tools_putstr));
 }
 
 int			ft_write_up_s(t_printer *printer)
 {
 	wchar_t				*arg;
-	size_t				str_len;
+	size_t				len;
 	size_t				i;
 	int					wchar_len;
 
 	arg = va_arg(*printer->args, wchar_t*);
-	str_len = 0;
+	if (arg == NULL)
+	{
+		len = (printer->flags.prec && printer->prec < 6) ? printer->prec : 6;
+		return (ft_tools_write_str(printer, "(null)", len, ft_tools_putstr));
+	}
+	len = 0;
 	if (arg != NULL)
 	{
 		i = 0;
@@ -115,10 +113,10 @@ int			ft_write_up_s(t_printer *printer)
 			if (wchar_len < 1)
 				return (EFORMAT);
 			if (printer->flags.prec
-					&& str_len + wchar_len >= (size_t)printer->prec)
+					&& len + wchar_len >= (size_t)printer->prec)
 				break ;
-			str_len += wchar_len;
+			len += wchar_len;
 		}
 	}
-	return (ft_tools_write_str(printer, arg, str_len, ft_tools_putwstr));
+	return (ft_tools_write_str(printer, arg, len, ft_tools_putwstr));
 }

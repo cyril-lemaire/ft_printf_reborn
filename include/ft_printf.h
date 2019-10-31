@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_printf.h                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: cyrlemai <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2019/10/28 13:03:00 by cyrlemai          #+#    #+#             */
+/*   Updated: 2019/10/31 18:46:05 by cyrlemai         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #ifndef FT_PRINTF_H
 # define FT_PRINTF_H
 # include "t_printer.h"
@@ -14,6 +26,9 @@
 #include <stdio.h>
 #include <limits.h>
 #endif
+
+typedef int	(*t_printer_intheader_select)(const t_printer *printer,
+				uintmax_t n);
 
 int			ft_printf(const char *format, ...);
 int			ft_vprintf(const char *format, va_list args);
@@ -34,7 +49,7 @@ int			ft_write_uintmax(t_printer *printer, uintmax_t n,
 int			ft_write_signed(t_printer *printer, const char *header,
 				const char *base);
 int			ft_write_unsigned(t_printer *printer, const char *header,
-				const char *base);
+				const char *base, t_printer_intheader_select header_select);
 int			ft_write_d(t_printer *printer);
 int			ft_write_u(t_printer *printer);
 int			ft_write_b(t_printer *printer);
@@ -50,8 +65,8 @@ int			ft_write_p(t_printer *printer);
 int			ft_write_up_b(t_printer *printer);
 
 /*
-**int			ft_asprintf(char **dstp, const char *format, ...);
-**int			ft_vasprintf(char **dstp, const char *format, va_list args);
+** int			ft_asprintf(char **dstp, const char *format, ...);
+** int			ft_vasprintf(char **dstp, const char *format, va_list args);
 */
 
 #endif

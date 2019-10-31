@@ -6,7 +6,7 @@
 #    By: clemaire <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/11/13 16:35:50 by clemaire          #+#    #+#              #
-#    Updated: 2019/10/25 16:01:18 by cyrlemai         ###   ########.fr        #
+#    Updated: 2019/10/31 18:55:52 by cyrlemai         ###   ########.fr        #
 #                                                                              #
 #******************************************************************************#
 
@@ -47,10 +47,10 @@ LIBFT_B_SHORT :=	strcat		strcmp		strcpy		strnlen		strncat	\
 
 SRC_NAMES :=	ft_printf_family	ft_printf_family_2	ft_print			\
 				ft_convert			ft_read_conversion	ft_write_conversion	\
-				ft_tools_atoi_light	ft_tools_imaxabs	ft_tools_write_uimax\
-				ft_writers_int		ft_writers_int_2	ft_writers_chr		\
-				ft_writers_other	ft_writers_str							\
-				t_printer			t_vdprinter			t_vdprinter_2
+				ft_tools_atoi_light	ft_write_uintmax	ft_writers_int		\
+				ft_writers_int_2	ft_writers_int_3	ft_writers_chr		\
+				ft_writers_others	ft_writers_str		t_printer			\
+				t_vdprinter			t_vdprinter_2
 
 SRC :=	$(SRC_NAMES:%=$(SRC_DIR)/%.c)	\
 		$(LIBFT_SRC:%=$(LIBFT_DIR)/%.c)
