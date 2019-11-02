@@ -6,7 +6,7 @@
 /*   By: cyrlemai <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/21 15:35:04 by cyrlemai          #+#    #+#             */
-/*   Updated: 2019/11/01 20:09:32 by cyrlemai         ###   ########.fr       */
+/*   Updated: 2019/11/02 22:22:16 by cyrlemai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -113,8 +113,8 @@ int				ft_read_conversion(const char *format, t_printer *printer)
 		read_size += ft_read_prec(format + read_size, printer);
 		read_size += ft_read_size(format + read_size, printer);
 	}
-	if ((printer->type = format[read_size]) != '\0')
-		++read_size;
+	printer->type = format[read_size];
+	++read_size;
 //	printf("flags: [%s%s%s%s%s%s]\n", printer->flags.minus ? "-" : "", printer->flags.plus ? "+" : "", printer->flags.zero ? "0" : "", printer->flags.space ? "s" : "", printer->flags.hash ? "#" : "", printer->flags.apos ? "'" : "");
 //	printf("width %d, prec %d, size '%c', type '%c'\n", printer->flags.width ? printer->width : -1, printer->flags.prec ? printer->prec : -1, printer->size, printer->type);
 	return (read_size);

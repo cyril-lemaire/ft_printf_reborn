@@ -6,7 +6,7 @@
 /*   By: cyrlemai <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/22 16:51:47 by cyrlemai          #+#    #+#             */
-/*   Updated: 2019/11/01 18:07:30 by cyrlemai         ###   ########.fr       */
+/*   Updated: 2019/11/02 22:19:33 by cyrlemai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,9 +47,9 @@ int			ft_tools_putstr(t_printer *printer, const void *str, size_t size)
 int			ft_tools_write_str(t_printer *printer, const void *str,
 					size_t len, t_printer_putstr putstr)
 {
-	int		ret_val;
-	int		f_ret;
-	size_t	filler_len;
+	int			ret_val;
+	int			f_ret;
+	size_t		filler_len;
 
 	ret_val = 0;
 	f_ret = 0;
@@ -57,7 +57,8 @@ int			ft_tools_write_str(t_printer *printer, const void *str,
 		? (size_t)printer->width - len : 0;
 	if (filler_len > 0 && !printer->flags.minus)
 	{
-		if ((f_ret = printer->repeat(printer, ' ', filler_len)) < 0)
+		if ((f_ret = printer->repeat(printer, printer->flags.zero ? '0' : ' ',
+						filler_len)) < 0)
 			return (f_ret);
 		ret_val += f_ret;
 	}
