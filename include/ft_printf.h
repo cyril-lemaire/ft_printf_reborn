@@ -6,7 +6,7 @@
 /*   By: cyrlemai <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/28 13:03:00 by cyrlemai          #+#    #+#             */
-/*   Updated: 2019/10/31 18:46:05 by cyrlemai         ###   ########.fr       */
+/*   Updated: 2019/11/01 17:16:25 by cyrlemai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,14 +21,12 @@
 # define EWRITE		-2
 # define EFORMAT	-3
 //#define FT_PRINTF_DEBUG
+#include <stdio.h>
 
 #ifdef FT_PRINTF_DEBUG
 #include <stdio.h>
 #include <limits.h>
 #endif
-
-typedef int	(*t_printer_intheader_select)(const t_printer *printer,
-				uintmax_t n);
 
 int			ft_printf(const char *format, ...);
 int			ft_vprintf(const char *format, va_list args);
@@ -49,7 +47,7 @@ int			ft_write_uintmax(t_printer *printer, uintmax_t n,
 int			ft_write_signed(t_printer *printer, const char *header,
 				const char *base);
 int			ft_write_unsigned(t_printer *printer, const char *header,
-				const char *base, t_printer_intheader_select header_select);
+				const char *base);
 int			ft_write_d(t_printer *printer);
 int			ft_write_u(t_printer *printer);
 int			ft_write_b(t_printer *printer);

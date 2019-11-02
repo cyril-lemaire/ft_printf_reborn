@@ -6,7 +6,7 @@
 /*   By: cyrlemai <cyrlemai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/25 21:01:15 by cyrlemai          #+#    #+#             */
-/*   Updated: 2019/10/31 18:48:39 by cyrlemai         ###   ########.fr       */
+/*   Updated: 2019/10/31 23:00:12 by cyrlemai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ int			ft_write_signed(t_printer *printer, const char *header,
 }
 
 int			ft_write_unsigned(t_printer *printer, const char *header,
-				const char *base, t_printer_intheader_select should_header)
+				const char *base)
 {
 	uintmax_t	arg;
 
@@ -67,7 +67,9 @@ int			ft_write_unsigned(t_printer *printer, const char *header,
 		arg = (uintmax_t)va_arg(*printer->args, ptrdiff_t);
 	else
 		arg = (uintmax_t)va_arg(*printer->args, unsigned);
-	header = (should_header != NULL && should_header(printer, arg)) ? header : "";
+	if (arg == 0 && !(printer->flags.prec && printer->prec == 0
+				&& ft_strcmp(header, "0") == 0))
+		header = "";
 	return (ft_write_uintmax(printer, arg, header, base));
 }
 
@@ -93,5 +95,5 @@ int			ft_write_u(t_printer *printer)
 {
 	const char	*header = "";
 
-	return (ft_write_unsigned(printer, header, "0123456789", NULL));
+	return (ft_write_unsigned(printer, header, "0123456789"));
 }

@@ -38,8 +38,6 @@ typedef struct	s_printer
 typedef int		(*t_printer_ft)(t_printer *printer);
 typedef int		(*t_printer_putstr)(t_printer *printer, const void *str,
 					size_t size);
-typedef int		(*t_printer_intheader_select)(const t_printer *printer,
-					uintmax_t n);
 
 int			ft_printer_init(t_printer *printer, va_list *args);
 

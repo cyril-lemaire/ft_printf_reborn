@@ -6,7 +6,7 @@
 /*   By: cyrlemai <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/21 15:35:04 by cyrlemai          #+#    #+#             */
-/*   Updated: 2019/10/31 19:22:41 by cyrlemai         ###   ########.fr       */
+/*   Updated: 2019/11/01 20:09:32 by cyrlemai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,6 +64,7 @@ static int		ft_read_prec(const char *format, t_printer *printer)
 {
 	if (format[0] != '.')
 		return (0);
+	printer->flags.prec = 1;
 	if (format[1] == '*')
 	{
 		printer->prec = va_arg(*printer->args, int);
@@ -99,20 +100,22 @@ static int		ft_read_size(const char *format, t_printer *printer)
 int				ft_read_conversion(const char *format, t_printer *printer)
 {
 	int		read_size;
-//	int		old_size;
+	int		old_size;
 
 	ft_bzero(&printer->flags, sizeof(printer->flags));
 	read_size = 1;
-//	old_size = 0;
-//	while (old_size < read_size)
-//	{
-//		old_size = read_size;
+	old_size = 0;
+	while (old_size < read_size)
+	{
+		old_size = read_size;
 		read_size += ft_read_flags(format + read_size, printer);
 		read_size += ft_read_width(format + read_size, printer);
 		read_size += ft_read_prec(format + read_size, printer);
 		read_size += ft_read_size(format + read_size, printer);
-//	}
+	}
 	if ((printer->type = format[read_size]) != '\0')
 		++read_size;
+//	printf("flags: [%s%s%s%s%s%s]\n", printer->flags.minus ? "-" : "", printer->flags.plus ? "+" : "", printer->flags.zero ? "0" : "", printer->flags.space ? "s" : "", printer->flags.hash ? "#" : "", printer->flags.apos ? "'" : "");
+//	printf("width %d, prec %d, size '%c', type '%c'\n", printer->flags.width ? printer->width : -1, printer->flags.prec ? printer->prec : -1, printer->size, printer->type);
 	return (read_size);
 }

@@ -6,7 +6,7 @@
 #    By: clemaire <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/11/13 16:35:50 by clemaire          #+#    #+#              #
-#    Updated: 2019/10/31 18:55:52 by cyrlemai         ###   ########.fr        #
+#    Updated: 2019/11/01 20:08:40 by cyrlemai         ###   ########.fr        #
 #                                                                              #
 #******************************************************************************#
 
@@ -48,7 +48,7 @@ LIBFT_B_SHORT :=	strcat		strcmp		strcpy		strnlen		strncat	\
 SRC_NAMES :=	ft_printf_family	ft_printf_family_2	ft_print			\
 				ft_convert			ft_read_conversion	ft_write_conversion	\
 				ft_tools_atoi_light	ft_write_uintmax	ft_writers_int		\
-				ft_writers_int_2	ft_writers_int_3	ft_writers_chr		\
+				ft_writers_int_2	ft_writers_chr		\
 				ft_writers_others	ft_writers_str		t_printer			\
 				t_vdprinter			t_vdprinter_2
 
@@ -59,9 +59,6 @@ OBJ :=	$(SRC_NAMES:%=$(OBJ_DIR)/%.o)
 
 LIBFT_OBJ :=	$(LIBFT_M_SHORT:%=$(LIBFT_OBJ_DIR)/ft_%.o)	\
 				$(LIBFT_B_SHORT:%=$(LIBFT_OBJ_DIR)/ft_%_bonus.o)
-
-TEST_NAME :=	printf_tester
-TEST_FILES :=	tester_main.c
 
 all: $(NAME)
 
@@ -100,11 +97,6 @@ fclean: clean
 
 re: fclean all
 
-test: $(TEST_NAME)
-
-$(TEST_NAME): $(TEST_FILES) $(NAME)
-	$(CC) -Weverything -fsanitize=address -I$(INCL_DIR) -I$(LIBFT_DIR) -L. -lftprintf -o $@ $(filter %.c,$^)
-
 obj: $(OBJ)
 
-.PHONY: all clean fclean re obj test
+.PHONY: all clean fclean re obj
