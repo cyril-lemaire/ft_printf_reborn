@@ -6,7 +6,7 @@
 /*   By: cyrlemai <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/21 15:35:04 by cyrlemai          #+#    #+#             */
-/*   Updated: 2019/11/02 22:22:16 by cyrlemai         ###   ########.fr       */
+/*   Updated: 2019/11/04 19:51:35 by cyrlemai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,7 @@ static int		ft_read_prec(const char *format, t_printer *printer)
 	{
 		printer->prec = va_arg(*printer->args, int);
 		if (printer->prec < 0)
-			printer->prec = 0;
+			printer->flags.prec = 0;
 		return (2);
 	}
 	return (1 + ft_tools_atoi_light(format + 1, &printer->prec));

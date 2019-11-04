@@ -6,7 +6,7 @@
 /*   By: cyrlemai <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/21 18:50:46 by cyrlemai          #+#    #+#             */
-/*   Updated: 2019/11/01 17:37:28 by cyrlemai         ###   ########.fr       */
+/*   Updated: 2019/11/04 21:42:25 by cyrlemai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ int				ft_vdprintf(int fd, const char *format, va_list args)
 
 	va_copy(args_cpy, args);
 	if ((printer = ft_vdprinter_new(fd, &args_cpy)) == NULL)
-		return (EALLOC);
+		return (-1);
 	ret_val = ft_print(format, &(printer->super));
 	va_end(args_cpy);
 	printer->del(printer);
