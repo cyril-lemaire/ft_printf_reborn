@@ -6,7 +6,7 @@
 /*   By: cyrlemai <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/28 12:41:49 by cyrlemai          #+#    #+#             */
-/*   Updated: 2019/10/29 14:22:59 by cyrlemai         ###   ########.fr       */
+/*   Updated: 2019/11/05 19:13:10 by cyrlemai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,8 @@ static size_t		ft_get_n_len(t_printer *printer, uintmax_t n,
 		++res;
 		n /= base_len;
 	}
+	if (printer->flags.apos)
+		res += (res - 1) / 3;
 	if (printer->flags.prec && (size_t)printer->prec > res)
 		return ((size_t)printer->prec);
 	return (res);

@@ -52,10 +52,21 @@ static int			ft_tools_putuintmax(t_printer *printer, uintmax_t n,
 	i = 1;
 	dst[n_len - i] = base[n % base_len];
 	n /= base_len;
-	while (i < n_len)
+	if (!printer->flags.apos)
 	{
-		dst[n_len - ++i] = base[n % base_len];
-		n /= base_len;
+		while (i < n_len)
+		{
+			dst[n_len - ++i] = base[n % base_len];
+			n /= base_len;
+		}
+	}
+	else
+	{
+		while (i < n_len)
+		{
+			dst[n_len - ++i] = base[n % base_len];
+			n /= base_len;
+		}
 	}
 	return (printer->write(printer, dst, n_len));
 }

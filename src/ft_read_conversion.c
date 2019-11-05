@@ -6,7 +6,7 @@
 /*   By: cyrlemai <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/21 15:35:04 by cyrlemai          #+#    #+#             */
-/*   Updated: 2019/11/04 19:51:35 by cyrlemai         ###   ########.fr       */
+/*   Updated: 2019/11/05 15:43:07 by cyrlemai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,8 @@ static int		ft_read_flags(const char *format, t_printer *printer)
 			flag_ptr = &(printer->flags.zero);
 		else if (format[read_size] == ' ')
 			flag_ptr = &(printer->flags.space);
+		else if (format[read_size] == '\'')
+			flag_ptr = &(printer->flags.apos);
 		else
 			break ;
 		*flag_ptr = 1;
