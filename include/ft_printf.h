@@ -6,7 +6,7 @@
 /*   By: cyrlemai <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/28 13:03:00 by cyrlemai          #+#    #+#             */
-/*   Updated: 2019/11/05 18:47:24 by cyrlemai         ###   ########.fr       */
+/*   Updated: 2019/11/06 13:21:35 by cyrlemai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,18 +24,22 @@
 # define FT_PRINTF_DEBUG
 # include <stdio.h>
 
+# if LDBL_MANT_DIG == 64
+#  define LDBL_EXP_DIG	15
+# endif
+
 # ifdef FT_PRINTF_DEBUG
 #  include <stdio.h>
 #  include <limits.h>
 # endif
 
-typedef struct			s_ldbl_cast
+typedef union			s_ldbl_cast
 {
-	long double			x;
+	long double			val;
 	struct
 	{
 		unsigned long	mant : LDBL_MANT_DIG;
-		unsigned long	exp : sizeof(long double) * 8 - LDBL_MANT_DIG - 1;
+		unsigned long	exp : LDBL_EXP_DIG;
 		unsigned long	sign : 1;
 	}					parts;
 }						t_ldbl_cast;
