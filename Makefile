@@ -6,7 +6,7 @@
 #    By: clemaire <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/11/13 16:35:50 by clemaire          #+#    #+#              #
-#    Updated: 2019/11/01 20:08:40 by cyrlemai         ###   ########.fr        #
+#    Updated: 2019/11/06 17:05:51 by cyrlemai         ###   ########.fr        #
 #                                                                              #
 #******************************************************************************#
 
@@ -19,6 +19,7 @@ RM_F :=			rm -f
 TOUCH :=		touch
 ECHO :=			echo
 AR_RCS :=		ar rcs
+CP :=			cp
 
 LIBFT_DIR :=		./libft
 LIBFT_OBJ_DIR :=	$(LIBFT_DIR)/bin/static
@@ -72,16 +73,20 @@ $(OBJ_DIR)/%.o: $(SRC_DIR)/%.c | $(OBJ_DIR)
 	$(CC) $(CFLAGS) -I$(INCL_DIR) -I$(LIBFT_DIR) -c -o $@ $<
 
 $(NAME): $(LIBFT_OBJ) $(OBJ)
-	$(AR_RCS) $@ $?
+	$(AR_RCS) $@ $^
 
-$(NAME)_alt: $(OBJ_DIR) $(OBJ)
-	$(AR_RCS) $@ $(?:$<=)
+$(NAME)_alt: $(OBJ)
+	$(AR_RCS) $@ $?
 
 $(NAME)_alt2: $(LIBFT_DIR)/$(LIBFT_NAME) $(PRINTF_NAME)
 	libtool --mode=link cc -static -o $@ $^
 
 $(NAME)_alt3: $(LIBFT_DIR)/$(LIBFT_NAME) $(PRINTF_NAME)
 	ar -rcT $@ $^
+
+$(NAME)_alt4: $(LIBFT_DIR)/libft.a $(OBJ)
+	$(CP) $< $@
+	$(AR_RCS) $@ $(OBJ)
 
 $(PRINTF_NAME): $(OBJ)
 	$(AR_RCS) $@ $?

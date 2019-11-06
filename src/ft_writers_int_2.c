@@ -3,14 +3,20 @@
 /*                                                        :::      ::::::::   */
 /*   ft_writers_int_2.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cyrlemai <cyrlemai@student.42.fr>          +#+  +:+       +#+        */
+/*   By: cyrlemai <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/10/25 21:01:07 by cyrlemai          #+#    #+#             */
-/*   Updated: 2019/11/01 17:50:37 by cyrlemai         ###   ########.fr       */
+/*   Created: 2019/11/06 17:49:23 by cyrlemai          #+#    #+#             */
+/*   Updated: 2019/11/06 17:55:52 by cyrlemai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
+
+int			ft_write_up_u(t_printer *printer)
+{
+	printer->size = 'l';
+	return (ft_write_u(printer));
+}
 
 int			ft_write_b(t_printer *printer)
 {
@@ -26,6 +32,12 @@ int			ft_write_o(t_printer *printer)
 
 	header = (printer->flags.hash) ? "0" : "";
 	return (ft_write_unsigned(printer, header, "01234567"));
+}
+
+int			ft_write_up_o(t_printer *printer)
+{
+	printer->size = 'l';
+	return (ft_write_o(printer));
 }
 
 int			ft_write_x(t_printer *printer)

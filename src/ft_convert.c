@@ -6,7 +6,7 @@
 /*   By: cyrlemai <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/28 13:04:35 by cyrlemai          #+#    #+#             */
-/*   Updated: 2019/11/04 21:52:56 by cyrlemai         ###   ########.fr       */
+/*   Updated: 2019/11/06 17:33:32 by cyrlemai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,5 +30,10 @@ int		ft_convert(const char *format, t_printer *printer)
 		if (f_ret > 0)
 			printer->written += f_ret;
 	}
-	return ((f_ret >= 0) ? read_size : f_ret);
+	if (f_ret >= 0)
+		return (read_size);
+	else if (f_ret == EFORMAT)
+		return (read_size - 1);
+	else
+		return (f_ret);
 }

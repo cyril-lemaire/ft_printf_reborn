@@ -6,7 +6,7 @@
 /*   By: cyrlemai <cyrlemai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/25 21:01:15 by cyrlemai          #+#    #+#             */
-/*   Updated: 2019/10/31 23:00:12 by cyrlemai         ###   ########.fr       */
+/*   Updated: 2019/11/06 17:57:31 by cyrlemai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,9 +52,9 @@ int			ft_write_unsigned(t_printer *printer, const char *header,
 	uintmax_t	arg;
 
 	if (printer->size == 'l')
-		arg = (uintmax_t)va_arg(*printer->args, unsigned long);
+		arg = (uintmax_t)va_arg(*printer->args, long unsigned);
 	else if (printer->size == 'L')
-		arg = (uintmax_t)va_arg(*printer->args, unsigned long long);
+		arg = (uintmax_t)va_arg(*printer->args, long long unsigned);
 	else if (printer->size == 'h')
 		arg = (uintmax_t)(unsigned short)va_arg(*printer->args, unsigned);
 	else if (printer->size == 'H')
@@ -89,6 +89,12 @@ int			ft_write_d(t_printer *printer)
 	else
 		header = "";
 	return (ft_write_signed(printer, header, "0123456789"));
+}
+
+int			ft_write_up_d(t_printer *printer)
+{
+	printer->size = 'l';
+	return (ft_write_d(printer));
 }
 
 int			ft_write_u(t_printer *printer)

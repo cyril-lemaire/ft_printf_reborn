@@ -6,7 +6,7 @@
 /*   By: cyrlemai <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/28 13:03:00 by cyrlemai          #+#    #+#             */
-/*   Updated: 2019/11/06 13:21:35 by cyrlemai         ###   ########.fr       */
+/*   Updated: 2019/11/06 17:58:34 by cyrlemai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,9 +67,12 @@ int						ft_write_signed(t_printer *printer, const char *header,
 int						ft_write_unsigned(t_printer *printer,
 							const char *header, const char *base);
 int						ft_write_d(t_printer *printer);
+int						ft_write_up_d(t_printer *printer);
 int						ft_write_u(t_printer *printer);
+int						ft_write_up_u(t_printer *printer);
 int						ft_write_b(t_printer *printer);
 int						ft_write_o(t_printer *printer);
+int						ft_write_up_o(t_printer *printer);
 int						ft_write_x(t_printer *printer);
 int						ft_write_up_x(t_printer *printer);
 int						ft_write_pct(t_printer *printer);
