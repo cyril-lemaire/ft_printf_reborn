@@ -6,7 +6,7 @@
 /*   By: cyrlemai <cyrlemai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/25 21:01:15 by cyrlemai          #+#    #+#             */
-/*   Updated: 2019/11/11 01:29:24 by cyrlemai         ###   ########.fr       */
+/*   Updated: 2019/11/11 19:11:15 by cyrlemai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,8 +17,8 @@
 #include <unistd.h>
 #include <stdint.h>
 
-int			ft_write_signed(t_printer *printer, const char *header,
-				const char *base)
+int			ft_write_signed(t_printer *printer, const char *base,
+				int (*should_putheader)(uintmax_t n_len, size_t zeroes))
 {
 	intmax_t	arg;
 
@@ -38,12 +38,16 @@ int			ft_write_signed(t_printer *printer, const char *header,
 		arg = (intmax_t)(char)va_arg(*printer->args, int);
 	else
 		arg = (intmax_t)va_arg(*printer->args, int);
-	return (ft_write_uintmax(printer, (uintmax_t)((arg < 0) ? -arg : arg),
-				arg < 0 ? "-" : header, base));
+	if (arg < 0)
+	{
+		printer->header = "-";
+		arg *= -1;
+	}
+	return (ft_write_uintmax(printer, (uintmax_t)(arg), base, should_putheader));
 }
 
-int			ft_write_unsigned(t_printer *printer, const char *header,
-				const char *base)
+int			ft_write_unsigned(t_printer *printer, const char *base,
+				int (*should_putheader)(uintmax_t n_len, size_t zeroes))
 {
 	uintmax_t	arg;
 
@@ -63,10 +67,7 @@ int			ft_write_unsigned(t_printer *printer, const char *header,
 		arg = (uintmax_t)va_arg(*printer->args, ptrdiff_t);
 	else
 		arg = (uintmax_t)va_arg(*printer->args, unsigned);
-	if (arg == 0 && !(printer->flags.prec && printer->prec == 0
-				&& ft_strcmp(header, "0") == 0))
-		header = "";
-	return (ft_write_uintmax(printer, arg, header, base));
+	return (ft_write_uintmax(printer, arg, base, should_putheader));
 }
 
 /*
@@ -76,27 +77,17 @@ int			ft_write_unsigned(t_printer *printer, const char *header,
 
 int			ft_write_d(t_printer *printer)
 {
-	char	*header;
-
 	if (printer->flags.plus)
-		header = "+";
+		printer->header = "+";
 	else if (printer->flags.space)
-		header = " ";
+		printer->header = " ";
 	else
-		header = "";
-	return (ft_write_signed(printer, header, "0123456789"));
-}
-
-int			ft_write_up_d(t_printer *printer)
-{
-	ft_bzero(&(printer->flags.size), sizeof(printer->flags.size));
-	printer->flags.size.l = 1;
-	return (ft_write_d(printer));
+		printer->header = "";
+	return (ft_write_signed(printer, "0123456789", NULL));
 }
 
 int			ft_write_u(t_printer *printer)
 {
-	const char	*header = "";
-
-	return (ft_write_unsigned(printer, header, "0123456789"));
+	printer->header = "";
+	return (ft_write_unsigned(printer, "0123456789", NULL));
 }

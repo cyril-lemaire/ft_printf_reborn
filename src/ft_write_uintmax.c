@@ -6,7 +6,7 @@
 /*   By: cyrlemai <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/28 12:41:49 by cyrlemai          #+#    #+#             */
-/*   Updated: 2019/11/05 19:13:10 by cyrlemai         ###   ########.fr       */
+/*   Updated: 2019/11/11 18:49:43 by cyrlemai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,11 +23,8 @@ static size_t		ft_get_n_len(t_printer *printer, uintmax_t n,
 	size_t	res;
 	size_t	base_len;
 
-	if (n == 0)
-		return ((printer->flags.prec) ? (size_t)printer->prec : 1);
 	base_len = ft_strlen(base);
-	res = 1;
-	n /= base_len;
+	res = 0;
 	while (n > 0)
 	{
 		++res;
@@ -39,17 +36,7 @@ static size_t		ft_get_n_len(t_printer *printer, uintmax_t n,
 		return ((size_t)printer->prec);
 	return (res);
 }
-/*
-static char const	*ft_get_header(t_printer *printer, uintmax_t n,
-						const char *header)
-{
-	if (n > 0 || ft_strcmp(header, "+") == 0 || ft_strcmp(header, " ") == 0)
-		return (header);
-	if (printer->flags.prec && printer->prec == 0 && ft_strcmp(header, "0") == 0)
-		return (header);
-	return ("");
-}
-*/
+
 static int			ft_tools_putuintmax(t_printer *printer, uintmax_t n,
 						size_t n_len, const char *base)
 {
@@ -57,9 +44,7 @@ static int			ft_tools_putuintmax(t_printer *printer, uintmax_t n,
 	char		dst[n_len];
 	size_t		i;
 
-	i = 1;
-	dst[n_len - i] = base[n % base_len];
-	n /= base_len;
+	i = 0;
 	while (i < n_len)
 	{
 		dst[n_len - ++i] = base[n % base_len];
@@ -68,6 +53,67 @@ static int			ft_tools_putuintmax(t_printer *printer, uintmax_t n,
 	return (printer->write(printer, dst, n_len));
 }
 
+static void			get_parts_len(t_printer *printer, size_t n_len,
+						int (*should_putheader)(uintmax_t n_len, size_t zeroes),
+						size_t *parts_len)
+{
+	size_t			leading_zeroes;
+	size_t			header_len;
+	size_t			filler_len;
+	size_t			filler_head_len;
+	size_t			filler_tail_len;
+
+	leading_zeroes = ((int)n_len < printer->prec) ? printer->prec - n_len : 0;
+	header_len = (should_putheader != NULL && !should_putheader(n_len,
+				leading_zeroes)) ? 0 : ft_strlen(printer->header);
+	filler_len = (printer->flags.width && (size_t)printer->width > n_len
+			+ header_len) ? (size_t)(printer->width) - n_len - header_len : 0;
+	filler_tail_len = 0;
+	filler_head_len = 0;
+	if (printer->flags.minus)
+		filler_tail_len = filler_len;
+	else if (printer->flags.zero && !printer->flags.prec)
+		leading_zeroes += filler_len;
+	else
+		filler_head_len = filler_len;
+	parts_len[0] = filler_head_len;
+	parts_len[1] = header_len;
+	parts_len[2] = leading_zeroes;
+	parts_len[3] = n_len;
+	parts_len[4] = filler_tail_len;
+}
+
+int					ft_write_uintmax(t_printer *printer, uintmax_t n,
+						const char *base,
+						int (*should_putheader)(uintmax_t n_len, size_t zeroes))
+{
+	size_t			parts_len[5];
+	size_t			n_len;
+	int				f_ret;
+	int				res;
+
+	n_len = ft_get_n_len(printer, n, base);
+	get_parts_len(printer, n_len, should_putheader, parts_len);
+	res = 0;
+	if ((f_ret = printer->repeat(printer, ' ', parts_len[0])) < 0)
+		return (f_ret);
+	res += f_ret;
+	if ((f_ret = printer->write(printer, printer->header, parts_len[1])) < 0)
+		return (f_ret);
+	res += f_ret;
+	if ((f_ret = printer->repeat(printer, '0', parts_len[2])) < 0)
+		return (f_ret);
+	res += f_ret;
+	if ((f_ret = ft_tools_putuintmax(printer, n, parts_len[3], base)) < 0)
+		return (f_ret);
+	res += f_ret;
+	if ((f_ret = printer->repeat(printer, ' ', parts_len[0])) < 0)
+		return (f_ret);
+	res += f_ret;
+	return (res);
+}
+
+/*
 int					ft_write_uintmax(t_printer *printer, uintmax_t n,
 						const char *header, const char *base)
 {
@@ -79,7 +125,7 @@ int					ft_write_uintmax(t_printer *printer, uintmax_t n,
 	int				ret_val;
 
 	n_len = ft_get_n_len(printer, n, base);
-	header_len= ft_strlen(header);
+	header_len = ft_strlen(header);
 	filler_len = (printer->flags.width && (size_t)printer->width > n_len
 			+ header_len) ? printer->width - n_len - header_len : 0;
     ret_val = 0;
@@ -93,3 +139,4 @@ int					ft_write_uintmax(t_printer *printer, uintmax_t n,
 		ret_val += printer->repeat(printer, filler, filler_len);
 	return (ret_val);
 }
+*/

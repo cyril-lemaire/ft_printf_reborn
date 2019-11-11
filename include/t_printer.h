@@ -38,6 +38,7 @@ typedef struct	s_printer
 	int					prec;
 	int					width;
 	char				type;
+	char				*header;
 	va_list*			args;
 	t_printer_write		write;
 	t_printer_repeat	repeat;
