@@ -6,7 +6,7 @@
 /*   By: cyrlemai <cyrlemai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/25 21:01:15 by cyrlemai          #+#    #+#             */
-/*   Updated: 2019/11/06 17:57:31 by cyrlemai         ###   ########.fr       */
+/*   Updated: 2019/11/11 01:29:24 by cyrlemai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,24 +22,20 @@ int			ft_write_signed(t_printer *printer, const char *header,
 {
 	intmax_t	arg;
 
-	if (printer->size == 'l')
-		arg = (intmax_t)va_arg(*printer->args, long int);
-	else if (printer->size == 'L')
-		arg = (intmax_t)va_arg(*printer->args, long long int);
-	else if (printer->size == 'h')
-		arg = (intmax_t)(short)va_arg(*printer->args, int);
-	else if (printer->size == 'H')
-		arg = (intmax_t)(char)va_arg(*printer->args, int);
-	else if (printer->size == 'j')
-		arg = (intmax_t)va_arg(*printer->args, intmax_t);
-	else if (printer->size == 'z')
-#ifdef _POSIX_VERSION
+	if (printer->flags.size.t)
+		arg = (intmax_t)va_arg(*printer->args, ptrdiff_t);
+	else if (printer->flags.size.z)
 		arg = (intmax_t)va_arg(*printer->args, ssize_t);
-#else
-		arg = (intmax_t)va_arg(*printer->args, ptrdiff_t);
-#endif
-	else if (printer->size == 't')
-		arg = (intmax_t)va_arg(*printer->args, ptrdiff_t);
+	else if (printer->flags.size.j)
+		arg = (intmax_t)va_arg(*printer->args, intmax_t);
+	else if (printer->flags.size.ll)
+		arg = (intmax_t)va_arg(*printer->args, long long int);
+	else if (printer->flags.size.l)
+		arg = (intmax_t)va_arg(*printer->args, long int);
+	else if (printer->flags.size.h)
+		arg = (intmax_t)(short)va_arg(*printer->args, int);
+	else if (printer->flags.size.hh)
+		arg = (intmax_t)(char)va_arg(*printer->args, int);
 	else
 		arg = (intmax_t)va_arg(*printer->args, int);
 	return (ft_write_uintmax(printer, (uintmax_t)((arg < 0) ? -arg : arg),
@@ -51,19 +47,19 @@ int			ft_write_unsigned(t_printer *printer, const char *header,
 {
 	uintmax_t	arg;
 
-	if (printer->size == 'l')
+	if (printer->flags.size.l)
 		arg = (uintmax_t)va_arg(*printer->args, long unsigned);
-	else if (printer->size == 'L')
+	else if (printer->flags.size.ll)
 		arg = (uintmax_t)va_arg(*printer->args, long long unsigned);
-	else if (printer->size == 'h')
+	else if (printer->flags.size.h)
 		arg = (uintmax_t)(unsigned short)va_arg(*printer->args, unsigned);
-	else if (printer->size == 'H')
+	else if (printer->flags.size.hh)
 		arg = (uintmax_t)(unsigned char)va_arg(*printer->args, unsigned);
-	else if (printer->size == 'j')
+	else if (printer->flags.size.j)
 		arg = (uintmax_t)va_arg(*printer->args, uintmax_t);
-	else if (printer->size == 'z')
+	else if (printer->flags.size.z)
 		arg = (uintmax_t)va_arg(*printer->args, size_t);
-	else if (printer->size == 't')
+	else if (printer->flags.size.t)
 		arg = (uintmax_t)va_arg(*printer->args, ptrdiff_t);
 	else
 		arg = (uintmax_t)va_arg(*printer->args, unsigned);
@@ -93,7 +89,8 @@ int			ft_write_d(t_printer *printer)
 
 int			ft_write_up_d(t_printer *printer)
 {
-	printer->size = 'l';
+	ft_bzero(&(printer->flags.size), sizeof(printer->flags.size));
+	printer->flags.size.l = 1;
 	return (ft_write_d(printer));
 }
 

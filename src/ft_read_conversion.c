@@ -6,7 +6,7 @@
 /*   By: cyrlemai <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/21 15:35:04 by cyrlemai          #+#    #+#             */
-/*   Updated: 2019/11/05 15:43:07 by cyrlemai         ###   ########.fr       */
+/*   Updated: 2019/11/11 01:34:33 by cyrlemai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,26 +19,24 @@
 static int		ft_read_flags(const char *format, t_printer *printer)
 {
 	int		read_size;
-	int		*flag_ptr;
 
 	read_size = 0;
 	while (1)
 	{
 		if (format[read_size] == '-')
-			flag_ptr = &(printer->flags.minus);
+			printer->flags.minus = 1;
 		else if (format[read_size] == '+')
-			flag_ptr = &(printer->flags.plus);
+			printer->flags.plus = 1;
 		else if (format[read_size] == '#')
-			flag_ptr = &(printer->flags.hash);
+			printer->flags.hash = 1;
 		else if (format[read_size] == '0')
-			flag_ptr = &(printer->flags.zero);
+			printer->flags.zero = 1;
 		else if (format[read_size] == ' ')
-			flag_ptr = &(printer->flags.space);
+			printer->flags.space = 1;
 		else if (format[read_size] == '\'')
-			flag_ptr = &(printer->flags.apos);
+			printer->flags.apos = 1;
 		else
 			break ;
-		*flag_ptr = 1;
 		++read_size;
 	}
 	return (read_size);
@@ -79,24 +77,31 @@ static int		ft_read_prec(const char *format, t_printer *printer)
 
 static int		ft_read_size(const char *format, t_printer *printer)
 {
-	int		read_size;
-
-	if (ft_strchr("lhIjz", format[0]) == NULL || format[0] == '\0')
+	if (ft_strnequ(format, "hh", 2))
+	{
+		printer->flags.size.hh = 1;
+		return (2);
+	}
+	if (ft_strnequ(format, "ll", 2))
+	{
+		printer->flags.size.ll = 1;
+		return (2);
+	}
+	if (*format == 'h')
+		printer->flags.size.h = 1;
+	else if (*format == 'l')
+		printer->flags.size.l = 1;
+	else if (*format == 'L')
+		printer->flags.size.up_l = 1;
+	else if (*format == 'j')
+		printer->flags.size.j = 1;
+	else if (*format == 'z')
+		printer->flags.size.z = 1;
+	else if (*format == 't')
+		printer->flags.size.t = 1;
+	else
 		return (0);
-	read_size = 1;
-	printer->size = format[0];
-	if ((format[0] == 'l' || format[0] == 'h') && format[0] == format[1])
-	{
-		++read_size;
-		printer->size = ft_toupper(printer->size);
-	}
-	else if (format[0] == 'I' && (ft_strnequ(format + 1, "32", 2)
-				|| ft_strnequ(format + 1, "64", 2)))
-	{
-			read_size += 2;
-			printer->size = (format[1] == '3') ? 'I' - 32 : 'I' - 64;
-	}
-	return (read_size);
+	return (1);
 }
 
 int				ft_read_conversion(const char *format, t_printer *printer)
@@ -118,6 +123,6 @@ int				ft_read_conversion(const char *format, t_printer *printer)
 	printer->type = format[read_size];
 	++read_size;
 //	printf("flags: [%s%s%s%s%s%s]\n", printer->flags.minus ? "-" : "", printer->flags.plus ? "+" : "", printer->flags.zero ? "0" : "", printer->flags.space ? "s" : "", printer->flags.hash ? "#" : "", printer->flags.apos ? "'" : "");
-//	printf("width %d, prec %d, size '%c', type '%c'\n", printer->flags.width ? printer->width : -1, printer->flags.prec ? printer->prec : -1, printer->size, printer->type);
+//	printf("width %d, prec %d, type '%c'\n", printer->flags.width ? printer->width : -1, printer->flags.prec ? printer->prec : -1, printer->type);
 	return (read_size);
 }

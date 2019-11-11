@@ -6,7 +6,7 @@
 /*   By: cyrlemai <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/06 16:48:41 by cyrlemai          #+#    #+#             */
-/*   Updated: 2019/11/06 18:00:37 by cyrlemai         ###   ########.fr       */
+/*   Updated: 2019/11/11 01:29:37 by cyrlemai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@ static int			ft_not_implemented(t_printer *printer)
 	(void)printer;
 	return (-1);
 }
+
 static void			ft_set_moar_writers(t_printer_ft *writers)
 {
 	writers[(unsigned char)('D')] = ft_write_up_d;
@@ -31,7 +32,7 @@ static void			ft_set_moar_writers(t_printer_ft *writers)
 
 static t_printer_ft	ft_get_writer(unsigned char index)
 {
-	static t_printer_ft		writers[UCHAR_MAX+ 1];
+	static t_printer_ft		writers[UCHAR_MAX];
 
 	if (writers[(unsigned char)('%')] == NULL)
 	{

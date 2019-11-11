@@ -6,7 +6,7 @@
 /*   By: cyrlemai <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/22 16:51:47 by cyrlemai          #+#    #+#             */
-/*   Updated: 2019/11/02 22:19:33 by cyrlemai         ###   ########.fr       */
+/*   Updated: 2019/11/11 01:30:49 by cyrlemai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,7 +76,7 @@ int			ft_write_s(t_printer *printer)
 	char				*arg;
 	size_t				len;
 
-	if (printer->size != '\0' && ft_strchr("lwL", printer->size) != NULL)
+	if (printer->flags.size.l)
 		return (ft_write_up_s(printer));
 	arg = va_arg(*printer->args, char*);
 	if (arg == NULL)

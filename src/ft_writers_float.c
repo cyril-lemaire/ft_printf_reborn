@@ -6,7 +6,7 @@
 /*   By: cyrlemai <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/06 18:37:11 by cyrlemai          #+#    #+#             */
-/*   Updated: 2019/11/06 18:57:13 by cyrlemai         ###   ########.fr       */
+/*   Updated: 2019/11/10 18:59:09 by cyrlemai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,11 +35,7 @@ static int		get_base_exp(long double d, char *base)
 
 int				ft_write_ldbl(t_printer *printer, long double ldbl)
 {
-	t_ldbl_cast		n;
 
-	n.val = ldbl;
-	if (n < 0)
-
-
+	// TODO
 	return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: cyrlemai <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/28 13:03:00 by cyrlemai          #+#    #+#             */
-/*   Updated: 2019/11/06 17:58:34 by cyrlemai         ###   ########.fr       */
+/*   Updated: 2019/11/11 01:32:16 by cyrlemai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,15 +24,15 @@
 # define FT_PRINTF_DEBUG
 # include <stdio.h>
 
-# if LDBL_MANT_DIG == 64
-#  define LDBL_EXP_DIG	15
-# endif
+
+#define LDBL_EXP_DIG 15
 
 # ifdef FT_PRINTF_DEBUG
 #  include <stdio.h>
 #  include <limits.h>
 # endif
 
+// Don't forget to remove all this stuff.
 typedef union			s_ldbl_cast
 {
 	long double			val;
@@ -43,6 +43,7 @@ typedef union			s_ldbl_cast
 		unsigned long	sign : 1;
 	}					parts;
 }						t_ldbl_cast;
+
 
 int						ft_printf(const char *format, ...);
 int						ft_vprintf(const char *format, va_list args);

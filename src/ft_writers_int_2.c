@@ -6,15 +6,17 @@
 /*   By: cyrlemai <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/06 17:49:23 by cyrlemai          #+#    #+#             */
-/*   Updated: 2019/11/06 17:55:52 by cyrlemai         ###   ########.fr       */
+/*   Updated: 2019/11/11 01:29:36 by cyrlemai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
+#include "libft.h"
 
 int			ft_write_up_u(t_printer *printer)
 {
-	printer->size = 'l';
+	ft_bzero(&(printer->flags.size), sizeof(printer->flags.size));
+	printer->flags.size.l = 1;
 	return (ft_write_u(printer));
 }
 
@@ -36,7 +38,8 @@ int			ft_write_o(t_printer *printer)
 
 int			ft_write_up_o(t_printer *printer)
 {
-	printer->size = 'l';
+	ft_bzero(&(printer->flags.size), sizeof(printer->flags.size));
+	printer->flags.size.l = 1;
 	return (ft_write_o(printer));
 }
 
