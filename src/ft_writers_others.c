@@ -6,7 +6,7 @@
 /*   By: cyrlemai <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/28 13:07:47 by cyrlemai          #+#    #+#             */
-/*   Updated: 2019/11/12 02:02:00 by cyrlemai         ###   ########.fr       */
+/*   Updated: 2019/11/13 17:01:29 by cyrlemai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,9 @@ int			ft_write_up_b(t_printer *printer)
 
 int			ft_write_p(t_printer *printer)
 {
+	uintmax_t	arg;
+
 	printer->header = "0x";
-	return (ft_write_unsigned(printer, "0123456789abcdef", NULL));
+	arg = (uintmax_t)va_arg(*printer->args, void *);
+	return (ft_write_uintmax(printer, arg, "0123456789abcdef", NULL));
 }

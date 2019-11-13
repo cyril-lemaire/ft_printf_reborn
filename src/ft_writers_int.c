@@ -6,7 +6,7 @@
 /*   By: cyrlemai <cyrlemai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/25 21:01:15 by cyrlemai          #+#    #+#             */
-/*   Updated: 2019/11/12 12:11:09 by cyrlemai         ###   ########.fr       */
+/*   Updated: 2019/11/13 17:27:04 by cyrlemai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,12 +22,12 @@ int			ft_write_signed(t_printer *printer, const char *base,
 {
 	intmax_t	arg;
 
-	if (printer->flags.size.t)
+	if (printer->flags.size.j)
+		arg = va_arg(*printer->args, intmax_t);
+	else if (printer->flags.size.t)
 		arg = (intmax_t)va_arg(*printer->args, ptrdiff_t);
 	else if (printer->flags.size.z)
 		arg = (intmax_t)va_arg(*printer->args, ssize_t);
-	else if (printer->flags.size.j)
-		arg = (intmax_t)va_arg(*printer->args, intmax_t);
 	else if (printer->flags.size.ll)
 		arg = (intmax_t)va_arg(*printer->args, long long int);
 	else if (printer->flags.size.l)
@@ -43,7 +43,7 @@ int			ft_write_signed(t_printer *printer, const char *base,
 		printer->header = "-";
 		arg *= -1;
 	}
-	return (ft_write_uintmax(printer, (uintmax_t)(arg), base, should_putheader));
+	return (ft_write_uintmax(printer, (uintmax_t)arg, base, should_putheader));
 }
 
 int			ft_write_unsigned(t_printer *printer, const char *base,
@@ -51,20 +51,20 @@ int			ft_write_unsigned(t_printer *printer, const char *base,
 {
 	uintmax_t	arg;
 
-	if (printer->flags.size.l)
-		arg = (uintmax_t)va_arg(*printer->args, long unsigned);
-	else if (printer->flags.size.ll)
-		arg = (uintmax_t)va_arg(*printer->args, long long unsigned);
-	else if (printer->flags.size.h)
-		arg = (uintmax_t)(unsigned short)va_arg(*printer->args, unsigned);
-	else if (printer->flags.size.hh)
-		arg = (uintmax_t)(unsigned char)va_arg(*printer->args, unsigned);
-	else if (printer->flags.size.j)
-		arg = (uintmax_t)va_arg(*printer->args, uintmax_t);
+	if (printer->flags.size.j)
+		arg = va_arg(*printer->args, uintmax_t);
 	else if (printer->flags.size.z)
 		arg = (uintmax_t)va_arg(*printer->args, size_t);
 	else if (printer->flags.size.t)
 		arg = (uintmax_t)va_arg(*printer->args, ptrdiff_t);
+	else if (printer->flags.size.ll)
+		arg = (uintmax_t)va_arg(*printer->args, long long unsigned);
+	else if (printer->flags.size.l)
+		arg = (uintmax_t)va_arg(*printer->args, long unsigned);
+	else if (printer->flags.size.h)
+		arg = (uintmax_t)(unsigned short)va_arg(*printer->args, unsigned);
+	else if (printer->flags.size.hh)
+		arg = (uintmax_t)(unsigned char)va_arg(*printer->args, unsigned);
 	else
 		arg = (uintmax_t)va_arg(*printer->args, unsigned);
 	return (ft_write_uintmax(printer, arg, base, should_putheader));

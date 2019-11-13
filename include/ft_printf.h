@@ -6,7 +6,7 @@
 /*   By: cyrlemai <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/28 13:03:00 by cyrlemai          #+#    #+#             */
-/*   Updated: 2019/11/11 18:52:38 by cyrlemai         ###   ########.fr       */
+/*   Updated: 2019/11/13 17:19:12 by cyrlemai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,6 @@
 #  include <limits.h>
 # endif
 
-// Don't forget to remove all this stuff.
 typedef union			s_ldbl_cast
 {
 	long double			val;
@@ -42,7 +41,6 @@ typedef union			s_ldbl_cast
 		unsigned long	sign : 1;
 	}					parts;
 }						t_ldbl_cast;
-
 
 int					ft_printf(const char *format, ...);
 int					ft_vprintf(const char *format, va_list args);
