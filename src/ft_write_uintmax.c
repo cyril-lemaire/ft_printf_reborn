@@ -6,7 +6,7 @@
 /*   By: cyrlemai <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/28 12:41:49 by cyrlemai          #+#    #+#             */
-/*   Updated: 2019/11/11 18:49:43 by cyrlemai         ###   ########.fr       */
+/*   Updated: 2019/11/12 14:03:28 by cyrlemai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,19 +32,29 @@ static size_t		ft_get_n_len(t_printer *printer, uintmax_t n,
 	}
 	if (printer->flags.apos)
 		res += (res - 1) / 3;
-	if (printer->flags.prec && (size_t)printer->prec > res)
-		return ((size_t)printer->prec);
 	return (res);
 }
 
 static int			ft_tools_putuintmax(t_printer *printer, uintmax_t n,
 						size_t n_len, const char *base)
 {
+	char		sep;
 	const int	base_len = ft_strlen(base);
 	char		dst[n_len];
 	size_t		i;
 
 	i = 0;
+	if (printer->flags.apos)
+	{
+		sep = ',';
+		while (i < n_len)
+		{
+			if (i % 4 == 3)
+				dst[n_len - ++i] = sep;
+			dst[n_len - ++i] = base[n % base_len];
+			n /= base_len;
+		}
+	}
 	while (i < n_len)
 	{
 		dst[n_len - ++i] = base[n % base_len];
@@ -54,7 +64,7 @@ static int			ft_tools_putuintmax(t_printer *printer, uintmax_t n,
 }
 
 static void			get_parts_len(t_printer *printer, size_t n_len,
-						int (*should_putheader)(uintmax_t n_len, size_t zeroes),
+						int (*should_putheader)(size_t n_len, size_t zeroes),
 						size_t *parts_len)
 {
 	size_t			leading_zeroes;
@@ -67,7 +77,8 @@ static void			get_parts_len(t_printer *printer, size_t n_len,
 	header_len = (should_putheader != NULL && !should_putheader(n_len,
 				leading_zeroes)) ? 0 : ft_strlen(printer->header);
 	filler_len = (printer->flags.width && (size_t)printer->width > n_len
-			+ header_len) ? (size_t)(printer->width) - n_len - header_len : 0;
+			+ header_len + leading_zeroes) ? (size_t)(printer->width) - n_len
+			- header_len - leading_zeroes : 0;
 	filler_tail_len = 0;
 	filler_head_len = 0;
 	if (printer->flags.minus)
@@ -85,15 +96,18 @@ static void			get_parts_len(t_printer *printer, size_t n_len,
 
 int					ft_write_uintmax(t_printer *printer, uintmax_t n,
 						const char *base,
-						int (*should_putheader)(uintmax_t n_len, size_t zeroes))
+						int (*should_putheader)(size_t n_len, size_t zeroes))
 {
 	size_t			parts_len[5];
 	size_t			n_len;
 	int				f_ret;
 	int				res;
 
+	if (!printer->flags.prec)
+		printer->prec = 1;
 	n_len = ft_get_n_len(printer, n, base);
 	get_parts_len(printer, n_len, should_putheader, parts_len);
+//	printf("heading spaces: %zu, header: %zu, leading zeroes %zu, n len: %zu, trailing spaces %zu\n", parts_len[0], parts_len[1], parts_len[2], parts_len[3], parts_len[4]); fflush(stdout);
 	res = 0;
 	if ((f_ret = printer->repeat(printer, ' ', parts_len[0])) < 0)
 		return (f_ret);
@@ -107,7 +121,7 @@ int					ft_write_uintmax(t_printer *printer, uintmax_t n,
 	if ((f_ret = ft_tools_putuintmax(printer, n, parts_len[3], base)) < 0)
 		return (f_ret);
 	res += f_ret;
-	if ((f_ret = printer->repeat(printer, ' ', parts_len[0])) < 0)
+	if ((f_ret = printer->repeat(printer, ' ', parts_len[4])) < 0)
 		return (f_ret);
 	res += f_ret;
 	return (res);

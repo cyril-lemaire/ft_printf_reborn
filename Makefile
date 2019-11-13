@@ -6,7 +6,7 @@
 #    By: clemaire <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/11/13 16:35:50 by clemaire          #+#    #+#              #
-#    Updated: 2019/11/11 18:47:07 by cyrlemai         ###   ########.fr        #
+#    Updated: 2019/11/12 12:04:32 by cyrlemai         ###   ########.fr        #
 #                                                                              #
 #******************************************************************************#
 
@@ -15,7 +15,7 @@ PRINTF_NAME :=	libprintf.a
 LIBFT_NAME :=	libft.a
 
 CC := 			gcc
-CFLAGS :=		-Wall -Wextra -Werror
+CFLAGS =		-Wall -Wextra -Werror
 MKDIR_P :=		mkdir -p
 RM_F :=			rm -f
 TOUCH :=		touch
@@ -77,18 +77,21 @@ $(OBJ_DIR)/%.o: $(SRC_DIR)/%.c | $(OBJ_DIR)
 $(NAME): $(LIBFT_OBJ) $(OBJ)
 	$(AR_RCS) $@ $^
 
-$(NAME)_alt: $(OBJ)
-	$(AR_RCS) $@ $?
+debug: CFLAGS += -g
+debug: all
 
-$(NAME)_alt2: $(LIBFT_DIR)/$(LIBFT_NAME) $(PRINTF_NAME)
+alt: $(OBJ) $(LIBFT_OBJ)
+	$(AR_RCS) $(NAME) $?
+
+alt2: $(LIBFT_DIR)/$(LIBFT_NAME) $(PRINTF_NAME)
 	libtool --mode=link cc -static -o $(NAME) $^
 
-$(NAME)_alt3: $(LIBFT_DIR)/$(LIBFT_NAME) $(PRINTF_NAME)
-	ar -rcT $@ $^
+alt3: $(LIBFT_DIR)/$(LIBFT_NAME) $(PRINTF_NAME)
+	ar -rcT $(NAME) $^
 
-$(NAME)_alt4: $(LIBFT_DIR)/libft.a $(OBJ)
-	$(CP) $< $@
-	$(AR_RCS) $@ $(OBJ)
+alt4: $(LIBFT_DIR)/$(LBIFT_NAME) $(OBJ)
+	$(CP) $< $(NAME)
+	$(AR_RCS) $(NAME) $(OBJ)
 
 $(PRINTF_NAME): $(OBJ)
 	$(AR_RCS) $@ $?
@@ -106,4 +109,4 @@ re: fclean all
 
 obj: $(OBJ)
 
-.PHONY: all clean fclean re obj
+.PHONY: all clean fclean re obj alt alt2 alt3

@@ -6,14 +6,14 @@
 /*   By: cyrlemai <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/06 17:49:38 by cyrlemai          #+#    #+#             */
-/*   Updated: 2019/11/11 18:52:54 by cyrlemai         ###   ########.fr       */
+/*   Updated: 2019/11/12 11:43:10 by cyrlemai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
 #include "libft.h"
 
-static int	ft_should_putheader_o(uintmax_t n_len, size_t leading_zeroes)
+static int	ft_should_putheader_o(size_t n_len, size_t leading_zeroes)
 {
 	(void)n_len;
 	return (leading_zeroes == 0);
