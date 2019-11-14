@@ -6,7 +6,7 @@
 #    By: clemaire <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/11/13 16:35:50 by clemaire          #+#    #+#              #
-#    Updated: 2019/11/12 12:04:32 by cyrlemai         ###   ########.fr        #
+#    Updated: 2019/11/14 17:35:46 by cyrlemai         ###   ########.fr        #
 #                                                                              #
 #******************************************************************************#
 
@@ -30,30 +30,12 @@ SRC_DIR :=		./src
 OBJ_DIR :=		./bin
 INCL_DIR :=		./include
 
-LIBFT_M_SHORT :=	memset		bzero		memcpy		memccpy		memmove	\
-					memchr		memcmp		strlen		strlcpy		strlcat	\
-					strchr		strrchr		strnstr		strncmp		atoi	\
-					isalpha		isdigit		isalnum		isascii		isprint	\
-					toupper		tolower		calloc		strdup		substr	\
-					strjoin		strtrim		split		itoa		strmapi	\
-					putchar_fd	putstr_fd	putendl_fd	putnbr_fd
-
-LIBFT_B_SHORT :=	strcat		strcmp		strcpy		strnlen		strncat	\
-					strncpy		strstr		memalloc	memdel		strnew	\
-					strdel		strclr		striter		striteri	strmap	\
-					strequ		strnequ		putchar		putstr		putendl	\
-					putnbr		lstnew		lstdelone	lstclear	lstadd_front\
-					lstsize		lstlast		lstiter		lstmap		isspace	\
-					mod			abs			lstadd_back	lstdelnext	lstgetindex	\
-					lstdelindex	min			max			realloc		stracat	\
-					stradd		wclen		wcslen		wctomb
-
 SRC_NAMES :=	ft_printf_family	ft_printf_family_2	ft_print			\
 				ft_convert			ft_read_conversion	ft_write_conversion	\
 				ft_tools_atoi_light	ft_write_uintmax	ft_writers_int		\
 				ft_writers_int_2	ft_writers_int_3	ft_writers_chr		\
-				ft_writers_others	ft_writers_str		t_printer			\
-				t_vdprinter			t_vdprinter_2
+				ft_writers_others	ft_writers_str		ft_writers_float	\
+				t_printer			t_vdprinter			t_vdprinter_2
 
 SRC :=	$(SRC_NAMES:%=$(SRC_DIR)/%.c)	\
 		$(LIBFT_SRC:%=$(LIBFT_DIR)/%.c)
@@ -74,8 +56,9 @@ $(OBJ_DIR):
 $(OBJ_DIR)/%.o: $(SRC_DIR)/%.c | $(OBJ_DIR)
 	$(CC) $(CFLAGS) -I$(INCL_DIR) -I$(LIBFT_DIR) -c -o $@ $<
 
-$(NAME): $(LIBFT_OBJ) $(OBJ)
-	$(AR_RCS) $@ $^
+$(NAME): $(LIBFT_DIR)/$(LIBFT_NAME) $(OBJ)
+	$(CP) $< $@
+	$(AR_RCS) $@ $(OBJ)
 
 debug: CFLAGS += -g
 debug: all

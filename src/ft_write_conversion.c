@@ -6,7 +6,7 @@
 /*   By: cyrlemai <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/06 16:48:41 by cyrlemai          #+#    #+#             */
-/*   Updated: 2019/11/13 17:19:12 by cyrlemai         ###   ########.fr       */
+/*   Updated: 2019/11/14 14:24:36 by cyrlemai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@ static t_printer_ft	ft_get_writer(unsigned char index)
 		writers[(unsigned char)('s')] = ft_write_s;
 		writers[(unsigned char)('S')] = ft_write_up_s;
 		writers[(unsigned char)('p')] = ft_write_p;
-		writers[(unsigned char)('f')] = ft_not_implemented,
+		writers[(unsigned char)('f')] = ft_write_f,
 		writers[(unsigned char)('F')] = ft_not_implemented,
 		writers[(unsigned char)('g')] = ft_not_implemented,
 		writers[(unsigned char)('G')] = ft_not_implemented,
