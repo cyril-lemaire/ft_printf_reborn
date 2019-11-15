@@ -6,7 +6,7 @@
 /*   By: cyrlemai <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/28 12:41:49 by cyrlemai          #+#    #+#             */
-/*   Updated: 2019/11/13 09:36:28 by cyrlemai         ###   ########.fr       */
+/*   Updated: 2019/11/15 18:49:07 by cyrlemai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@
 #include <stdint.h>
 #include <stdio.h>	// Debug only
 
-static size_t		ft_get_n_len(t_printer *printer, uintmax_t n,
+static size_t		ft_get_uintmax_len(t_printer *printer, uintmax_t n,
 						const char *base)
 {
 	size_t	res;
@@ -67,31 +67,31 @@ static void			get_parts_len(t_printer *printer, size_t n_len,
 						int (*should_putheader)(size_t n_len, size_t zeroes),
 						size_t *parts_len)
 {
-	size_t			leading_zeroes;
+	size_t			leading_spaces;
 	size_t			header_len;
+	size_t			leading_zeroes;
+	size_t			trailing_spaces;
 	size_t			filler_len;
-	size_t			filler_head_len;
-	size_t			filler_tail_len;
 
 	leading_zeroes = ((int)n_len < printer->prec) ? printer->prec - n_len : 0;
 	header_len = (should_putheader != NULL && !should_putheader(n_len,
 				leading_zeroes)) ? 0 : ft_strlen(printer->header);
-	filler_len = (printer->flags.width && (size_t)printer->width > n_len
-			+ header_len + leading_zeroes) ? (size_t)(printer->width) - n_len
-			- header_len - leading_zeroes : 0;
-	filler_tail_len = 0;
-	filler_head_len = 0;
+	filler_len = n_len + header_len + leading_zeroes;
+	filler_len = (printer->flags.width && (size_t)printer->width > filler_len)
+		? (size_t)(printer->width) - filler_len : 0;
+	leading_spaces = 0;
+	trailing_spaces = 0;
 	if (printer->flags.minus)
-		filler_tail_len = filler_len;
+		trailing_spaces = filler_len;
 	else if (printer->flags.zero && !printer->flags.prec)
 		leading_zeroes += filler_len;
 	else
-		filler_head_len = filler_len;
-	parts_len[0] = filler_head_len;
+		leading_spaces = filler_len;
+	parts_len[0] = leading_spaces;
 	parts_len[1] = header_len;
 	parts_len[2] = leading_zeroes;
 	parts_len[3] = n_len;
-	parts_len[4] = filler_tail_len;
+	parts_len[4] = trailing_spaces;
 }
 
 int					ft_write_uintmax(t_printer *printer, uintmax_t n,
@@ -103,11 +103,9 @@ int					ft_write_uintmax(t_printer *printer, uintmax_t n,
 	int				f_ret;
 	int				res;
 
-	if (!printer->flags.prec)
-		printer->prec = 1;
-	n_len = ft_get_n_len(printer, n, base);
+	printer->prec = (printer->flags.prec) ? printer->prec : 1;
+	n_len = ft_get_uintmax_len(printer, n, base);
 	get_parts_len(printer, n_len, should_putheader, parts_len);
-//	printf("heading spaces: %zu, header: %zu, leading zeroes %zu, n len: %zu, trailing spaces %zu\n", parts_len[0], parts_len[1], parts_len[2], parts_len[3], parts_len[4]); fflush(stdout);
 	res = 0;
 	if ((f_ret = printer->repeat(printer, ' ', parts_len[0])) < 0)
 		return (f_ret);
@@ -138,7 +136,7 @@ int					ft_write_uintmax(t_printer *printer, uintmax_t n,
 	size_t			header_len;
 	int				ret_val;
 
-	n_len = ft_get_n_len(printer, n, base);
+	n_len = ft_get_uintmax_len(printer, n, base);
 	header_len = ft_strlen(header);
 	filler_len = (printer->flags.width && (size_t)printer->width > n_len
 			+ header_len) ? printer->width - n_len - header_len : 0;

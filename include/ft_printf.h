@@ -6,7 +6,7 @@
 /*   By: cyrlemai <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/28 13:03:00 by cyrlemai          #+#    #+#             */
-/*   Updated: 2019/11/14 14:25:33 by cyrlemai         ###   ########.fr       */
+/*   Updated: 2019/11/15 17:51:33 by cyrlemai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,6 +83,9 @@ int					ft_write_up_s(t_printer *printer);
 int					ft_write_p(t_printer *printer);
 int					ft_write_up_b(t_printer *printer);
 int					ft_write_f(t_printer *printer);
+int					get_base_exp(long double d, size_t base_len);
+int					ft_write_ldbl(t_printer *printer, long double n,
+						const char *base_exp, int exponentiate)
 
 /*
 ** int			ft_asprintf(char **dstp, const char *format, ...);

@@ -6,7 +6,7 @@
 #    By: clemaire <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/11/13 16:35:50 by clemaire          #+#    #+#              #
-#    Updated: 2019/11/14 17:35:46 by cyrlemai         ###   ########.fr        #
+#    Updated: 2019/11/15 17:51:05 by cyrlemai         ###   ########.fr        #
 #                                                                              #
 #******************************************************************************#
 
@@ -34,8 +34,9 @@ SRC_NAMES :=	ft_printf_family	ft_printf_family_2	ft_print			\
 				ft_convert			ft_read_conversion	ft_write_conversion	\
 				ft_tools_atoi_light	ft_write_uintmax	ft_writers_int		\
 				ft_writers_int_2	ft_writers_int_3	ft_writers_chr		\
-				ft_writers_others	ft_writers_str		ft_writers_float	\
-				t_printer			t_vdprinter			t_vdprinter_2
+				ft_writers_others	ft_writers_str		ft_writers_f		\
+				ft_writers_ldbl		t_printer			t_vdprinter			\
+				t_vdprinter_2
 
 SRC :=	$(SRC_NAMES:%=$(SRC_DIR)/%.c)	\
 		$(LIBFT_SRC:%=$(LIBFT_DIR)/%.c)
@@ -45,7 +46,10 @@ OBJ :=	$(SRC_NAMES:%=$(OBJ_DIR)/%.o)
 LIBFT_OBJ :=	$(LIBFT_M_SHORT:%=$(LIBFT_OBJ_DIR)/ft_%.o)	\
 				$(LIBFT_B_SHORT:%=$(LIBFT_OBJ_DIR)/ft_%_bonus.o)
 
-all: $(NAME)
+all: debug
+
+debug: CFLAGS += -g
+debug: $(NAME)
 
 $(LIBFT_DIR)/%:
 	$(MAKE) -C $(LIBFT_DIR) $*
@@ -59,9 +63,6 @@ $(OBJ_DIR)/%.o: $(SRC_DIR)/%.c | $(OBJ_DIR)
 $(NAME): $(LIBFT_DIR)/$(LIBFT_NAME) $(OBJ)
 	$(CP) $< $@
 	$(AR_RCS) $@ $(OBJ)
-
-debug: CFLAGS += -g
-debug: all
 
 alt: $(OBJ) $(LIBFT_OBJ)
 	$(AR_RCS) $(NAME) $?
