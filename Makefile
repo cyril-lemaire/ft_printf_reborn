@@ -6,7 +6,7 @@
 #    By: clemaire <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/11/13 16:35:50 by clemaire          #+#    #+#              #
-#    Updated: 2019/11/15 17:51:05 by cyrlemai         ###   ########.fr        #
+#    Updated: 2019/11/17 16:02:57 by cyrlemai         ###   ########.fr        #
 #                                                                              #
 #******************************************************************************#
 
@@ -14,7 +14,7 @@ NAME :=			libftprintf.a
 PRINTF_NAME :=	libprintf.a
 LIBFT_NAME :=	libft.a
 
-CC := 			gcc
+CC := 			clang
 CFLAGS =		-Wall -Wextra -Werror
 MKDIR_P :=		mkdir -p
 RM_F :=			rm -f
@@ -35,7 +35,7 @@ SRC_NAMES :=	ft_printf_family	ft_printf_family_2	ft_print			\
 				ft_tools_atoi_light	ft_write_uintmax	ft_writers_int		\
 				ft_writers_int_2	ft_writers_int_3	ft_writers_chr		\
 				ft_writers_others	ft_writers_str		ft_writers_f		\
-				ft_writers_ldbl		t_printer			t_vdprinter			\
+				ft_write_ldbl		t_printer			t_vdprinter			\
 				t_vdprinter_2
 
 SRC :=	$(SRC_NAMES:%=$(SRC_DIR)/%.c)	\

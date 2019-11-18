@@ -6,7 +6,7 @@
 /*   By: cyrlemai <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/15 12:33:35 by cyrlemai          #+#    #+#             */
-/*   Updated: 2019/11/15 18:49:07 by cyrlemai         ###   ########.fr       */
+/*   Updated: 2019/11/18 03:32:48 by cyrlemai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,62 +26,56 @@ static int		get_exp_len(int exp, size_t base_len)
 	size_t	res;
 
 	res = 0;
-	while (n > 0)
+	if (exp < 0)
+		exp *= -1;
+	while (exp > 0)
 	{
 		++res;
-		n /= base_len;
+		exp /= base_len;
 	}
-	res = ((res < 2) ? 2 : res) + 2;
+	res = 2 + ((res < 2) ? 2 : res);
 	return (res);
 }
 
+int				get_ldbl_sign(t_printer *printer, t_ldbl_cast n)
+{
+	if (n.parts.sign)
+		return ('-');
+	else if (printer->flags.plus)
+		return ('+');
+	else if (printer->flags.space)
+		return (' ');
+	else
+		return (0);
+}
+
 /*
-**	- {0,1} sign char:		[""|" "|"+"|"-"]
-**	- {0,2} header string:	[""|"0x"|"0X"]
 **	n_len contains:
-**	- if not a number:
-**		- 3 chars:			["nan"|"NAN"]
-**	- else:
-**		- if inf or -inf:
-**			- 3 chars:			["inf"|"INF"]
-**		else:
-**			- {1,n} digits:			[0-9] (n = 1 if XeY, else exponent + 1)
-**			- if precision > 0:
-**				- 1 point char:		[.]
-**				- {1,n} digits:		[0-9] (n = precision)
-**			- if exponentiated:
-**				- {4,n} exp_len:	see description above
+**	- {0,1} sign char:			[""|" "|"+"|"-"]
+**	else:
+**		- {0,2} header string:	[""|"0x"|"0X"]
+**		- {1,n} digits:			[0-9] (1 if scientific, else exponent + 1)
+**		- if precision > 0:
+**			- 1 point char:		[.]
+**			- {1,n} digits:		[0-9] (precision)
+**		- if scientific:
+**			- {4,n} exp string:	see description above
 */
 
-static size_t	get_n_len(t_printer *printer, t_ldbl_cast n,
-					const char *base_exp, int exponentiate)
+static size_t	get_ldbl_real_len(t_printer *printer, t_ldbl_cast n,
+					const char *base_exp, int is_scientific)
 {
 	size_t	n_len;
 	size_t	base_len;
 	int		exponent;
-	int		exp_len;
 
-	if (n.val != n.val)
-		return (3);
-	n_len = (printer->flags.plus || printer->flags.space) ? 1 : n.parts.sign;
-	if (((n.parts.sign) ? -n.val : n.val) > LDBL_MAX)
-		return (n_len + 3);
-	n_len += ft_strlen(printer->header);
 	base_len = ft_strlen(base_exp) - 1;
 	exponent = get_base_exp(n.val, base_len);
-	if (!exponentiate)
-		n_len += exponent + 1;
-	else
-		n_len += 1 + ft_get_exp_len(exponent);
+	n_len = (is_scientific) ? 1 + get_exp_len(exponent, base_len)
+		: (exponent < 1) ? 1 : exponent + 1;
 	if (printer->prec > 0)
 		n_len += 1 + printer->prec;
 	return (n_len);
-}
-
-int				ft_tools_putldbl(t_printer *printer, t_ldbl_cast n,
-					size_t n_len, const char *base_repr)
-{
-
 }
 
 static void		get_parts_len(t_printer *printer, size_t n_len,
@@ -118,51 +112,82 @@ static int		ft_tools_putheader(t_printer *printer, t_ldbl_cast n,
 	int		written;
 	char	sign;
 
-	if (n.parts.sign)
-		sign = '-';
-	else if (printer->flags.plus)
-		sign = '+';
-	else if (printer->flags.space)
-		sign = ' ';
-	else
-		sign = '\0';
-	if (sign != '\0' && (f_ret = printer->write(printer, &sign, 1)) < 0)
-		return (f_ret);
-	written += f_ret;
-	if ((f_ret = printer->write(printer, printer->header,
-					len - (sign != '\0'))) < 0)
+	written = 0;
+	if ((sign = get_ldbl_sign(printer, n)) != '\0')
+		if ((written = printer->write(printer, &sign, 1)) < 0)
+			return (written);
+	if ((f_ret = printer->write(printer, printer->header, len - written)) < 0)
 		return (f_ret);
 	written += f_ret;
 	return (written);
 }
 
-int				ft_write_ldbl(t_printer *printer, t_ldbl_cast n,
-					const char *base_exp, int exponentiate)
+int				ft_write_ldbl_real(t_printer *printer, t_ldbl_cast n,
+					const char *base_exp, int is_scientific)
 {
-	size_t	parts_len[4];
+	size_t	parts_len[5];
 	int		n_len;
+	int		header_len;
 	int		f_ret;
 	int		res;
 
-	n_len = get_n_len(printer, n.val, base_exp, exponentiate);
+	n_len = get_ldbl_real_len(printer, n, base_exp, is_scientific);
 	header_len = ft_strlen(printer->header) + (n.parts.sign
 			|| printer->flags.plus || printer->flags.space);
-	get_parts_len(printer, n_len, parts_len);
+	get_parts_len(printer, n_len, header_len, parts_len);
 	res = 0;
+	f_ret = 0;
 	if ((f_ret = printer->repeat(printer, ' ', parts_len[0])) < 0)
 		return (f_ret);
+//	printf("leading spaces len: %d (expected %zu)\n", f_ret, parts_len[0]); fflush(stdout);
 	res += f_ret;
 	if ((f_ret = ft_tools_putheader(printer, n, parts_len[1])) < 0)
 		return (f_ret);
+//	printf("header len: %d (expected %zu)\n", f_ret, parts_len[1]); fflush(stdout);
 	res += f_ret;
 	if ((f_ret = printer->repeat(printer, '0', parts_len[2])) < 0)
 		return (f_ret);
+//	printf("leading zeroes: %d (expected %zu)\n", f_ret, parts_len[2]); fflush(stdout);
 	res += f_ret;
-	if ((f_ret = ft_tools_putldbl(printer, n, parts_len[3], base_exp)) < 0)
+	if ((f_ret = (is_scientific ? ft_putldbl_scientific : ft_putldbl_decimal)(
+					printer, n.val, base_exp))
+			< 0)
 		return (f_ret);
+//	printf("n len: %d (expected %zu)\n", f_ret, parts_len[3]); fflush(stdout);
 	res += f_ret;
 	if ((f_ret = printer->repeat(printer, ' ', parts_len[4])) < 0)
 		return (f_ret);
+//	printf("trailing spaces: %d (expected %zu)\n", f_ret, parts_len[4]); fflush(stdout);
 	res += f_ret;
 	return (res);
+}
+
+/*
+**	Handles all non-real values (inf and nan) as strings.
+**	and redirects to ft_write_ldbl_real for real values.
+*/
+
+int				ft_write_ldbl(t_printer *printer, t_ldbl_cast n,
+					const char *base_exp, int is_scientific)
+{
+	char		*name;
+	char		repr[5];
+	size_t		repr_len;
+	size_t		exp_index;
+	
+	exp_index = ft_strlen(base_exp) - 1;
+	if (n.val > LDBL_MAX || -n.val > LDBL_MAX)
+		name = (ft_isupper(base_exp[exp_index])) ? "INF" : "inf";
+	else if (n.val != n.val)
+		name = (ft_isupper(base_exp[exp_index])) ? "NAN" : "nan";
+	else
+		return (ft_write_ldbl_real(printer, n, base_exp, is_scientific));
+	repr_len = 0;
+	if ((repr[0] = get_ldbl_sign(printer, n)) != '\0')
+		++repr_len;
+	printer->flags.zero = 0;
+	printer->flags.prec = 0;
+	ft_memcpy(repr + repr_len, name, 3);
+	repr_len += 3;
+	return (ft_tools_write_str(printer, repr, repr_len, ft_tools_putstr));
 }

@@ -6,7 +6,7 @@
 /*   By: cyrlemai <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/06 16:48:41 by cyrlemai          #+#    #+#             */
-/*   Updated: 2019/11/14 14:24:36 by cyrlemai         ###   ########.fr       */
+/*   Updated: 2019/11/18 02:24:49 by cyrlemai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,8 @@ static int			ft_not_implemented(t_printer *printer)
 
 static void			ft_set_moar_writers(t_printer_ft *writers)
 {
+	writers[(unsigned char)('e')] = ft_write_e,
+	writers[(unsigned char)('E')] = ft_write_up_e,
 	writers[(unsigned char)('D')] = ft_write_up_d;
 	writers[(unsigned char)('O')] = ft_write_up_o;
 	writers[(unsigned char)('U')] = ft_write_up_u;
@@ -51,7 +53,7 @@ static t_printer_ft	ft_get_writer(unsigned char index)
 		writers[(unsigned char)('S')] = ft_write_up_s;
 		writers[(unsigned char)('p')] = ft_write_p;
 		writers[(unsigned char)('f')] = ft_write_f,
-		writers[(unsigned char)('F')] = ft_not_implemented,
+		writers[(unsigned char)('F')] = ft_write_up_f,
 		writers[(unsigned char)('g')] = ft_not_implemented,
 		writers[(unsigned char)('G')] = ft_not_implemented,
 		writers[(unsigned char)('a')] = ft_not_implemented,

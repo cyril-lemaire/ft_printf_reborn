@@ -6,7 +6,7 @@
 /*   By: cyrlemai <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/28 13:03:00 by cyrlemai          #+#    #+#             */
-/*   Updated: 2019/11/15 17:51:33 by cyrlemai         ###   ########.fr       */
+/*   Updated: 2019/11/18 02:23:45 by cyrlemai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@
 typedef union			s_ldbl_cast
 {
 	long double			val;
-	struct
+	struct				s_part
 	{
 		unsigned long	mant : LDBL_MANT_DIG;
 		unsigned long	exp : LDBL_EXP_DIG;
@@ -83,11 +83,20 @@ int					ft_write_up_s(t_printer *printer);
 int					ft_write_p(t_printer *printer);
 int					ft_write_up_b(t_printer *printer);
 int					ft_write_f(t_printer *printer);
+int					ft_write_up_f(t_printer *printer);
+int					ft_write_e(t_printer *printer);
+int					ft_write_up_e(t_printer *printer);
 int					get_base_exp(long double d, size_t base_len);
-int					ft_write_ldbl(t_printer *printer, long double n,
-						const char *base_exp, int exponentiate)
+int					ft_write_ldbl(t_printer *printer, t_ldbl_cast n,
+						const char *base_exp, int exponentiate);
+int					ft_tools_putldbl(t_printer *printer, long double n,
+						const char *base_exp, int is_scientific);
+int				ft_putldbl_decimal(t_printer *printer, long double n,
+					const char *base_exp);
+int				ft_putldbl_scientific(t_printer *printer, long double n,
+					const char *base_exp);
 
-/*
+	/*
 ** int			ft_asprintf(char **dstp, const char *format, ...);
 ** int			ft_vasprintf(char **dstp, const char *format, va_list args);
 */
