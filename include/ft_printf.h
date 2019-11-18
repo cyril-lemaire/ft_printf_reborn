@@ -6,7 +6,7 @@
 /*   By: cyrlemai <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/28 13:03:00 by cyrlemai          #+#    #+#             */
-/*   Updated: 2019/11/18 02:23:45 by cyrlemai         ###   ########.fr       */
+/*   Updated: 2019/11/18 16:04:14 by cyrlemai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,15 +21,13 @@
 # define EALLOC		-1
 # define EWRITE		-2
 # define EFORMAT	-3
+# define LDBL_EXP_DIG 15
 # define FT_PRINTF_DEBUG
-# include <stdio.h>
-
-#define LDBL_EXP_DIG 15
-
 # ifdef FT_PRINTF_DEBUG
 #  include <stdio.h>
 #  include <limits.h>
 # endif
+#include <stdio.h>
 
 typedef union			s_ldbl_cast
 {
@@ -86,7 +84,11 @@ int					ft_write_f(t_printer *printer);
 int					ft_write_up_f(t_printer *printer);
 int					ft_write_e(t_printer *printer);
 int					ft_write_up_e(t_printer *printer);
-int					get_base_exp(long double d, size_t base_len);
+int					ft_write_g(t_printer *printer);
+int					ft_write_up_g(t_printer *printer);
+int					ft_write_a(t_printer *printer);
+int					ft_write_up_a(t_printer *printer);
+int					get_base_exp(t_ldbl_cast n, size_t base_len);
 int					ft_write_ldbl(t_printer *printer, t_ldbl_cast n,
 						const char *base_exp, int exponentiate);
 int					ft_tools_putldbl(t_printer *printer, long double n,
@@ -95,6 +97,7 @@ int				ft_putldbl_decimal(t_printer *printer, long double n,
 					const char *base_exp);
 int				ft_putldbl_scientific(t_printer *printer, long double n,
 					const char *base_exp);
+long double		get_ldbl_arg(t_printer *printer);
 
 	/*
 ** int			ft_asprintf(char **dstp, const char *format, ...);

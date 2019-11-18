@@ -6,7 +6,7 @@
 #    By: clemaire <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/11/13 16:35:50 by clemaire          #+#    #+#              #
-#    Updated: 2019/11/17 16:02:57 by cyrlemai         ###   ########.fr        #
+#    Updated: 2019/11/18 15:19:25 by cyrlemai         ###   ########.fr        #
 #                                                                              #
 #******************************************************************************#
 
@@ -24,7 +24,6 @@ AR_RCS :=		ar rcs
 CP :=			cp
 
 LIBFT_DIR :=		./libft
-LIBFT_OBJ_DIR :=	$(LIBFT_DIR)/bin/static
 
 SRC_DIR :=		./src
 OBJ_DIR :=		./bin
@@ -36,7 +35,7 @@ SRC_NAMES :=	ft_printf_family	ft_printf_family_2	ft_print			\
 				ft_writers_int_2	ft_writers_int_3	ft_writers_chr		\
 				ft_writers_others	ft_writers_str		ft_writers_f		\
 				ft_write_ldbl		t_printer			t_vdprinter			\
-				t_vdprinter_2
+				t_vdprinter_2		ft_tools_putldbl	ft_writers_f_2
 
 SRC :=	$(SRC_NAMES:%=$(SRC_DIR)/%.c)	\
 		$(LIBFT_SRC:%=$(LIBFT_DIR)/%.c)
@@ -64,16 +63,13 @@ $(NAME): $(LIBFT_DIR)/$(LIBFT_NAME) $(OBJ)
 	$(CP) $< $@
 	$(AR_RCS) $@ $(OBJ)
 
-alt: $(OBJ) $(LIBFT_OBJ)
-	$(AR_RCS) $(NAME) $?
-
-alt2: $(LIBFT_DIR)/$(LIBFT_NAME) $(PRINTF_NAME)
+alt: $(LIBFT_DIR)/$(LIBFT_NAME) $(PRINTF_NAME)
 	libtool --mode=link cc -static -o $(NAME) $^
 
-alt3: $(LIBFT_DIR)/$(LIBFT_NAME) $(PRINTF_NAME)
+alt2: $(LIBFT_DIR)/$(LIBFT_NAME) $(PRINTF_NAME)
 	ar -rcT $(NAME) $^
 
-alt4: $(LIBFT_DIR)/$(LBIFT_NAME) $(OBJ)
+alt3: $(LIBFT_DIR)/$(LBIFT_NAME) $(OBJ)
 	$(CP) $< $(NAME)
 	$(AR_RCS) $(NAME) $(OBJ)
 

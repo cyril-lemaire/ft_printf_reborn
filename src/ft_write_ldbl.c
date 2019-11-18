@@ -6,7 +6,7 @@
 /*   By: cyrlemai <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/15 12:33:35 by cyrlemai          #+#    #+#             */
-/*   Updated: 2019/11/18 03:32:48 by cyrlemai         ###   ########.fr       */
+/*   Updated: 2019/11/18 18:27:35 by cyrlemai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,30 +14,7 @@
 #include "libft.h"
 #include <float.h>
 
-/*
-**	exp_len contains:
-**		- 1 separator char:	[e|E|p|P]
-**		- 1 sign char:		[+|-]
-**		- {2,n} digits:		[0-9]
-*/
-
-static int		get_exp_len(int exp, size_t base_len)
-{
-	size_t	res;
-
-	res = 0;
-	if (exp < 0)
-		exp *= -1;
-	while (exp > 0)
-	{
-		++res;
-		exp /= base_len;
-	}
-	res = 2 + ((res < 2) ? 2 : res);
-	return (res);
-}
-
-int				get_ldbl_sign(t_printer *printer, t_ldbl_cast n)
+static char		get_ldbl_sign(t_printer *printer, t_ldbl_cast n)
 {
 	if (n.parts.sign)
 		return ('-');
@@ -46,35 +23,53 @@ int				get_ldbl_sign(t_printer *printer, t_ldbl_cast n)
 	else if (printer->flags.space)
 		return (' ');
 	else
-		return (0);
+		return ('\0');
 }
 
 /*
-**	n_len contains:
-**	- {0,1} sign char:			[""|" "|"+"|"-"]
-**	else:
-**		- {0,2} header string:	[""|"0x"|"0X"]
-**		- {1,n} digits:			[0-9] (1 if scientific, else exponent + 1)
+**	n_len contains: (no header, no sign, no inf or nan value)
+**		if scientific:
+**			- 1  int digits:	[0-9]
+**		else:
+**			- {1,n} int digits:	[0,9]	(exponent + 1)
+**			if flag ',':
+				- {0, n} sep:	[,]		(exponent / 3)
 **		- if precision > 0:
 **			- 1 point char:		[.]
 **			- {1,n} digits:		[0-9] (precision)
 **		- if scientific:
-**			- {4,n} exp string:	see description above
+**			- 1 separator char:	[e|E|p|P]
+**			- 1 sign char:		[+|-]
+**			- {2,n} digits:		[0-9] ({1,n} for hexa, don't ask me why)
 */
 
 static size_t	get_ldbl_real_len(t_printer *printer, t_ldbl_cast n,
 					const char *base_exp, int is_scientific)
 {
 	size_t	n_len;
+	size_t	exp_len;
 	size_t	base_len;
 	int		exponent;
 
 	base_len = ft_strlen(base_exp) - 1;
-	exponent = get_base_exp(n.val, base_len);
-	n_len = (is_scientific) ? 1 + get_exp_len(exponent, base_len)
-		: (exponent < 1) ? 1 : exponent + 1;
+	exponent = get_base_exp(n, base_len);
+	n_len = (!is_scientific && exponent > 0) ? exponent + 1 : 1;
+	if (printer->flags.apos)
+		n_len += (n_len - 1) / 3;
 	if (printer->prec > 0)
 		n_len += 1 + printer->prec;
+	if (is_scientific)
+	{
+		exp_len = 0;
+		exponent = (exponent < 0) ? -exponent : exponent;
+		while (exponent > 0)
+		{
+			++exp_len;
+			exponent /= base_len;
+		}
+		exp_len = 2 + ((exp_len < 2) ? 1 + (base_len < 16) : exp_len);
+		n_len += exp_len;
+	}
 	return (n_len);
 }
 
@@ -86,16 +81,16 @@ static void		get_parts_len(t_printer *printer, size_t n_len,
 	size_t			trailing_spaces;
 	size_t			filler_len;
 
-	leading_zeroes = ((int)n_len < printer->prec) ? printer->prec - n_len : 0;
-	filler_len = n_len + header_len + leading_zeroes;
+	filler_len = header_len + n_len;
 	filler_len = (printer->flags.width && (size_t)printer->width > filler_len)
 		? (size_t)(printer->width) - filler_len : 0;
 	leading_spaces = 0;
+	leading_zeroes = 0;
 	trailing_spaces = 0;
 	if (printer->flags.minus)
 		trailing_spaces = filler_len;
 	else if (printer->flags.zero)
-		leading_zeroes += filler_len;
+		leading_zeroes = filler_len;
 	else
 		leading_spaces = filler_len;
 	parts_len[0] = leading_spaces;
@@ -165,6 +160,8 @@ int				ft_write_ldbl_real(t_printer *printer, t_ldbl_cast n,
 /*
 **	Handles all non-real values (inf and nan) as strings.
 **	and redirects to ft_write_ldbl_real for real values.
+**	The last character of base_exp is the exponent and hints the case of the
+**	base. That's why we also put an exponent on %f and %F conversions.
 */
 
 int				ft_write_ldbl(t_printer *printer, t_ldbl_cast n,
@@ -183,7 +180,7 @@ int				ft_write_ldbl(t_printer *printer, t_ldbl_cast n,
 	else
 		return (ft_write_ldbl_real(printer, n, base_exp, is_scientific));
 	repr_len = 0;
-	if ((repr[0] = get_ldbl_sign(printer, n)) != '\0')
+	if (n.val == n.val && (repr[0] = get_ldbl_sign(printer, n)) != '\0')
 		++repr_len;
 	printer->flags.zero = 0;
 	printer->flags.prec = 0;

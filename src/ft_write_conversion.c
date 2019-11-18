@@ -6,7 +6,7 @@
 /*   By: cyrlemai <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/06 16:48:41 by cyrlemai          #+#    #+#             */
-/*   Updated: 2019/11/18 02:24:49 by cyrlemai         ###   ########.fr       */
+/*   Updated: 2019/11/18 15:14:48 by cyrlemai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,16 +17,20 @@
 #include <unistd.h>
 #include <limits.h>
 
-static int			ft_not_implemented(t_printer *printer)
-{
-	(void)printer;
-	return (-1);
-}
+/*
+**	static int			ft_not_implemented(t_printer *printer)
+**	{
+**		(void)printer;
+**		return (-1);
+**	}
+*/
 
 static void			ft_set_moar_writers(t_printer_ft *writers)
 {
-	writers[(unsigned char)('e')] = ft_write_e,
-	writers[(unsigned char)('E')] = ft_write_up_e,
+	writers[(unsigned char)('e')] = ft_write_e;
+	writers[(unsigned char)('E')] = ft_write_up_e;
+	writers[(unsigned char)('C')] = ft_write_up_c;
+	writers[(unsigned char)('S')] = ft_write_up_s;
 	writers[(unsigned char)('D')] = ft_write_up_d;
 	writers[(unsigned char)('O')] = ft_write_up_o;
 	writers[(unsigned char)('U')] = ft_write_up_u;
@@ -48,16 +52,14 @@ static t_printer_ft	ft_get_writer(unsigned char index)
 		writers[(unsigned char)('x')] = ft_write_x;
 		writers[(unsigned char)('X')] = ft_write_up_x;
 		writers[(unsigned char)('c')] = ft_write_c;
-		writers[(unsigned char)('C')] = ft_write_up_c;
 		writers[(unsigned char)('s')] = ft_write_s;
-		writers[(unsigned char)('S')] = ft_write_up_s;
 		writers[(unsigned char)('p')] = ft_write_p;
-		writers[(unsigned char)('f')] = ft_write_f,
-		writers[(unsigned char)('F')] = ft_write_up_f,
-		writers[(unsigned char)('g')] = ft_not_implemented,
-		writers[(unsigned char)('G')] = ft_not_implemented,
-		writers[(unsigned char)('a')] = ft_not_implemented,
-		writers[(unsigned char)('A')] = ft_not_implemented,
+		writers[(unsigned char)('f')] = ft_write_f;
+		writers[(unsigned char)('F')] = ft_write_up_f;
+		writers[(unsigned char)('g')] = ft_write_g;
+		writers[(unsigned char)('G')] = ft_write_up_g;
+		writers[(unsigned char)('a')] = ft_write_a;
+		writers[(unsigned char)('A')] = ft_write_up_a;
 		ft_set_moar_writers(writers);
 	}
 	return (writers[index]);
@@ -65,10 +67,8 @@ static t_printer_ft	ft_get_writer(unsigned char index)
 
 int					ft_write_conversion(t_printer *printer)
 {
-	t_printer_ft	func;
+	t_printer_ft	conversion_writer;
 
-	func = ft_get_writer((unsigned char)printer->type);
-	if (func != NULL)
-		return (func(printer));
-	return (EFORMAT);
+	conversion_writer = ft_get_writer((unsigned char)printer->type);
+	return ((conversion_writer != NULL) ? conversion_writer(printer) : EFORMAT);
 }
