@@ -6,7 +6,7 @@
 /*   By: cyrlemai <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/18 12:58:47 by cyrlemai          #+#    #+#             */
-/*   Updated: 2019/11/18 17:40:00 by cyrlemai         ###   ########.fr       */
+/*   Updated: 2019/11/19 00:39:47 by cyrlemai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,11 +20,12 @@ int				get_base_exp(t_ldbl_cast n, size_t base_len)
 
 //	printf("get_base_exp(%Le, base %zu) ...\n", n.val, base_len);fflush(stdout);
 //	printf("n = %Lg, base is %zu\nmant: %zu, exp: %zu\n", n.val, base_len, n.parts.mant, n.parts.exp);fflush(stdout);
-	n.parts.sign = 0;
+	n.val = (n.val < 0) ? -n.val : n.val;
 	if (n.val < LDBL_MIN) {
 		return (0);
 	}
 	res = 0;
+//	printf("n is %Lg, base len %zu (%d)\n", n.val, base_len, n.val > base_len); fflush(stdout);
 	while (n.val > base_len)
 	{
 		n.val /= base_len;
@@ -54,7 +55,7 @@ int				ft_tools_putexp(t_printer *printer, int exp,
 		exp *= -1;
 	while (exp > 0)
 	{
-		dst[buf_size - ++dst_len] = '0' + (exp % base_len);
+		dst[buf_size - ++dst_len] = base_exp[exp % base_len];
 		exp /= base_len;
 	}
 	while (dst_len < 2)

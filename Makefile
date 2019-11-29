@@ -6,7 +6,7 @@
 #    By: clemaire <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/11/13 16:35:50 by clemaire          #+#    #+#              #
-#    Updated: 2019/11/18 15:19:25 by cyrlemai         ###   ########.fr        #
+#    Updated: 2019/11/19 12:49:27 by cyrlemai         ###   ########.fr        #
 #                                                                              #
 #******************************************************************************#
 
@@ -23,7 +23,7 @@ ECHO :=			echo
 AR_RCS :=		ar rcs
 CP :=			cp
 
-LIBFT_DIR :=		./libft
+LIBFT_DIR :=	./libft
 
 SRC_DIR :=		./src
 OBJ_DIR :=		./bin
