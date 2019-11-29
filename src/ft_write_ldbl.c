@@ -6,7 +6,7 @@
 /*   By: cyrlemai <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/15 12:33:35 by cyrlemai          #+#    #+#             */
-/*   Updated: 2019/11/18 18:27:35 by cyrlemai         ###   ########.fr       */
+/*   Updated: 2019/11/29 15:27:28 by cyrlemai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -145,8 +145,7 @@ int				ft_write_ldbl_real(t_printer *printer, t_ldbl_cast n,
 //	printf("leading zeroes: %d (expected %zu)\n", f_ret, parts_len[2]); fflush(stdout);
 	res += f_ret;
 	if ((f_ret = (is_scientific ? ft_putldbl_scientific : ft_putldbl_decimal)(
-					printer, n.val, base_exp))
-			< 0)
+					printer, n.val, base_exp)) < 0)
 		return (f_ret);
 //	printf("n len: %d (expected %zu)\n", f_ret, parts_len[3]); fflush(stdout);
 	res += f_ret;

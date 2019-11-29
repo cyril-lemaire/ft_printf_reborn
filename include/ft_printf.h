@@ -6,7 +6,7 @@
 /*   By: cyrlemai <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/28 13:03:00 by cyrlemai          #+#    #+#             */
-/*   Updated: 2019/11/18 16:04:14 by cyrlemai         ###   ########.fr       */
+/*   Updated: 2019/11/29 16:53:16 by cyrlemai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,11 +93,11 @@ int					ft_write_ldbl(t_printer *printer, t_ldbl_cast n,
 						const char *base_exp, int exponentiate);
 int					ft_tools_putldbl(t_printer *printer, long double n,
 						const char *base_exp, int is_scientific);
-int				ft_putldbl_decimal(t_printer *printer, long double n,
-					const char *base_exp);
-int				ft_putldbl_scientific(t_printer *printer, long double n,
-					const char *base_exp);
-long double		get_ldbl_arg(t_printer *printer);
+int					ft_putldbl_decimal(t_printer *printer, t_ldbl_cast n,
+						const char *base_exp);
+int					ft_putldbl_scientific(t_printer *printer, t_ldbl_cast n,
+						const char *base_exp);
+long double			get_ldbl_arg(t_printer *printer);
 
 	/*
 ** int			ft_asprintf(char **dstp, const char *format, ...);
