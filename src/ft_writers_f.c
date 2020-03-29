@@ -39,7 +39,7 @@ int				ft_write_f(t_printer *printer)
 	if (!printer->flags.prec)
 		printer->prec = 6;
 	printer->header = "";
-	return (ft_write_ldbl(printer, arg, "0123456789e", 0));
+	return (ft_write_ldbl(printer, arg, "0123456789e", decimal));
 }
 
 int				ft_write_up_f(t_printer *printer)
@@ -50,7 +50,7 @@ int				ft_write_up_f(t_printer *printer)
 	if (!printer->flags.prec)
 		printer->prec = 6;
 	printer->header = "";
-	return (ft_write_ldbl(printer, arg, "0123456789E", 0));
+	return (ft_write_ldbl(printer, arg, "0123456789E", decimal));
 }
 
 int				ft_write_e(t_printer *printer)
@@ -61,7 +61,7 @@ int				ft_write_e(t_printer *printer)
 	if (!printer->flags.prec)
 		printer->prec = 6;
 	printer->header = "";
-	return (ft_write_ldbl(printer, arg, "0123456789e", 1));
+	return (ft_write_ldbl(printer, arg, "0123456789e", scientific));
 }
 
 int				ft_write_up_e(t_printer *printer)
@@ -72,5 +72,5 @@ int				ft_write_up_e(t_printer *printer)
 	if (!printer->flags.prec)
 		printer->prec = 6;
 	printer->header = "";
-	return (ft_write_ldbl(printer, arg, "0123456789E", 1));
+	return (ft_write_ldbl(printer, arg, "0123456789E", scientific));
 }

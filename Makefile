@@ -35,7 +35,8 @@ SRC_NAMES :=	ft_printf_family	ft_printf_family_2	ft_print			\
 				ft_writers_int_2	ft_writers_int_3	ft_writers_chr		\
 				ft_writers_others	ft_writers_str		ft_writers_f		\
 				ft_write_ldbl		t_printer			t_vdprinter			\
-				t_vdprinter_2		ft_tools_putldbl	ft_writers_f_2
+				t_vdprinter_2		ft_tools_putldbl	ft_writers_f_2		\
+				ft_tools_putldbl_2
 
 SRC :=	$(SRC_NAMES:%=$(SRC_DIR)/%.c)	\
 		$(LIBFT_SRC:%=$(LIBFT_DIR)/%.c)

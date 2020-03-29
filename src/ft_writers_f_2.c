@@ -29,7 +29,7 @@ int				ft_write_g(t_printer *printer)
 	if (-LDBL_MAX <= arg.val && arg.val <= LDBL_MAX)
 		exp = get_base_exp(arg, 10);
 	return (ft_write_ldbl(printer, arg, "0123456789e",
-				(exp < -4 || exp >= printer->prec)));
+				(exp < -4 || exp >= printer->prec) ? scientific : decimal));
 }
 
 int				ft_write_up_g(t_printer *printer)
@@ -45,7 +45,7 @@ int				ft_write_up_g(t_printer *printer)
 	printer->header = "";
 	exp = get_base_exp(arg, 10);
 	return (ft_write_ldbl(printer, arg, "0123456789E",
-				(exp < -4 || exp >= printer->prec)));
+				(exp < -4 || exp >= printer->prec) ? scientific : decimal));
 }
 
 int				ft_write_a(t_printer *printer)
@@ -56,7 +56,7 @@ int				ft_write_a(t_printer *printer)
 	if (!printer->flags.prec)
 		printer->prec = 6;
 	printer->header = "0x";
-	return (ft_write_ldbl(printer, arg, "0123456789abcdefp", 1));
+	return (ft_write_ldbl(printer, arg, "0123456789abcdefp", hexa));
 }
 
 int				ft_write_up_a(t_printer *printer)
@@ -67,5 +67,5 @@ int				ft_write_up_a(t_printer *printer)
 	if (!printer->flags.prec)
 		printer->prec = 6;
 	printer->header = "0X";
-	return (ft_write_ldbl(printer, arg, "0123456789ABCDEFP", 1));
+	return (ft_write_ldbl(printer, arg, "0123456789ABCDEFP", hexa));
 }

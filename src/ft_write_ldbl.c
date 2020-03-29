@@ -33,7 +33,7 @@ static char		get_ldbl_sign(t_printer *printer, t_ldbl_cast n)
 **		else:
 **			- {1,n} int digits:	[0,9]	(exponent + 1)
 **			if flag ',':
-				- {0, n} sep:	[,]		(exponent / 3)
+**				- {0, n} sep:	[,]		(exponent / 3)
 **		- if precision > 0:
 **			- 1 point char:		[.]
 **			- {1,n} digits:		[0-9] (precision)
@@ -41,33 +41,32 @@ static char		get_ldbl_sign(t_printer *printer, t_ldbl_cast n)
 **			- 1 separator char:	[e|E|p|P]
 **			- 1 sign char:		[+|-]
 **			- {2,n} digits:		[0-9] ({1,n} for hexa, don't ask me why)
+**				- NOTE: Hexa conversions display BINARY power as hexa.
 */
 
 static size_t	get_ldbl_real_len(t_printer *printer, t_ldbl_cast n,
-					const char *base_exp, int is_scientific)
+					t_lbdl_type type)
 {
 	size_t	n_len;
 	size_t	exp_len;
-	size_t	base_len;
 	int		exponent;
 
-	base_len = ft_strlen(base_exp) - 1;
-	exponent = get_base_exp(n, base_len);
-	n_len = (!is_scientific && exponent > 0) ? exponent + 1 : 1;
+	exponent = type == hexa ? n.parts.exp - LDBL_EXP_BIAS : get_base_exp(n, 10);
+	n_len = (type == decimal && exponent > 0) ? exponent + 1 : 1;
 	if (printer->flags.apos)
 		n_len += (n_len - 1) / 3;
 	if (printer->prec > 0)
 		n_len += 1 + printer->prec;
-	if (is_scientific)
+	if (type != decimal)
 	{
 		exp_len = 0;
 		exponent = (exponent < 0) ? -exponent : exponent;
 		while (exponent > 0)
 		{
 			++exp_len;
-			exponent /= base_len;
+			exponent /= (type == hexa) ? 16 : 10;
 		}
-		exp_len = 2 + ((exp_len < 2) ? 1 + (base_len < 16) : exp_len);
+		exp_len = 2 + ((exp_len < 2) ? 1 + (type != hexa) : exp_len);
 		n_len += exp_len;
 	}
 	return (n_len);
@@ -118,7 +117,7 @@ static int		ft_tools_putheader(t_printer *printer, t_ldbl_cast n,
 }
 
 int				ft_write_ldbl_real(t_printer *printer, t_ldbl_cast n,
-					const char *base_exp, int is_scientific)
+					const char *base_exp, t_lbdl_type conv_type)
 {
 	size_t	parts_len[5];
 	int		n_len;
@@ -126,7 +125,7 @@ int				ft_write_ldbl_real(t_printer *printer, t_ldbl_cast n,
 	int		f_ret;
 	int		res;
 
-	n_len = get_ldbl_real_len(printer, n, base_exp, is_scientific);
+	n_len = get_ldbl_real_len(printer, n, conv_type);
 	header_len = ft_strlen(printer->header) + (n.parts.sign
 			|| printer->flags.plus || printer->flags.space);
 	get_parts_len(printer, n_len, header_len, parts_len);
@@ -144,8 +143,7 @@ int				ft_write_ldbl_real(t_printer *printer, t_ldbl_cast n,
 		return (f_ret);
 //	printf("leading zeroes: %d (expected %zu)\n", f_ret, parts_len[2]); fflush(stdout);
 	res += f_ret;
-	if ((f_ret = (is_scientific ? ft_putldbl_scientific : ft_putldbl_decimal)(
-					printer, n.val, base_exp)) < 0)
+	if ((f_ret = ft_putldbl(printer, n, base_exp, conv_type)) < 0)
 		return (f_ret);
 //	printf("n len: %d (expected %zu)\n", f_ret, parts_len[3]); fflush(stdout);
 	res += f_ret;

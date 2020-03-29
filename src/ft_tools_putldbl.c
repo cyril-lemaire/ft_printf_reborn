@@ -88,7 +88,7 @@ int				ft_putldbl_shift(t_printer *printer, t_ldbl_cast *n,
 	while (nb_digits > 0)
 	{
 //		printf("n is now %Lf\n", *n.val); fflush(stdout);
-		digit = (int)n->val % base_len;
+		digit = (int)n->val;
 		if ((f_ret = printer->write(printer, base_exp + digit, 1)) < 0)
 			return (f_ret);
 		written += f_ret;
@@ -112,15 +112,12 @@ int				ft_putldbl_decimal(t_printer *printer, t_ldbl_cast n,
 	size_t	base_len;
 	int		power;
 
-//	printf("Writing float %Lf (base_exp %s, prec %d)\n", n, base_exp, printer->prec); fflush(stdout);
 	written = 0;
 	base_len = ft_strlen(base_exp) - 1;
 	power = get_base_exp(n, base_len);
 	power = (power < 0) ? 0 : power;
-	n.val /= ft_intpow(base_len, power);
 	n.val += 0.5 * ft_intpow(base_len, -printer->prec);
-//	printf("Rounded n: %.*Lf (%+Le)\n", printer->prec + 2, n.val, 0.5L * ft_intpow(base_len, -printer->prec)); fflush(stdout);
-//	printf("Writing float %Lf (base_exp %s)\n", n.val, base_exp); fflush(stdout);
+	n.val /= ft_intpow(base_len, power);
 	if ((f_ret = ft_putldbl_shift(printer, &n, base_exp, power + 1)) < 0)
 		return (f_ret);
 	written += f_ret;
@@ -135,27 +132,5 @@ int				ft_putldbl_decimal(t_printer *printer, t_ldbl_cast n,
 			return (f_ret);
 		written += f_ret;
 	}
-	return (written);
-}
-
-int				ft_putldbl_scientific(t_printer *printer, t_ldbl_cast n,
-					const char *base_exp)
-{
-	int		f_ret;
-	int		written;
-	size_t	base_len;
-	int		power;
-
-	base_len = ft_strlen(base_exp) - 1;
-	power = get_base_exp(n, base_len);
-	n.val /= ft_intpow(base_len, power);
-	if ((f_ret = ft_putldbl_decimal(printer, n, base_exp)) < 0)
-		return (f_ret);
-	written = f_ret;
-//	printf("salut c'est cool\n");fflush(stdout);
-	if ((f_ret = ft_tools_putexp(printer, power, base_exp)) < 0)
-		return (f_ret);
-	written += f_ret;
-//	printf("salut c'est super cool\n");fflush(stdout);
 	return (written);
 }
