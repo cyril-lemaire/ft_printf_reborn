@@ -1,4 +1,3 @@
-
 #include "ft_printf.h"
 #include "libft.h"
 #include <float.h>
@@ -9,18 +8,18 @@ static int		ft_putldbl_hexabody(t_printer *printer, t_ldbl_cast n,
 	int		f_ret;
 	int		written;
 
-	if ((f_ret = ft_write_uintmax(printer, n.parts.mant >> (LDBL_MANT_DIG - 1),
+	if ((f_ret = ft_putuintmax(printer, n.parts.mant >> (LDBL_MANT_DIG - 1),
 			base_exp[16] == 'p' ? "0123456789abcdef"
-			: "0123456789ABCDEF", NULL)) < 0)
+			: "0123456789ABCDEF")) < 0)
 		return (f_ret);
 	written = f_ret;
 	if ((f_ret = printer->write(printer, ".", 1)) < 0)
 		return (f_ret);
 	written += f_ret;
-	if ((f_ret = ft_write_uintmax(printer,
+	if ((f_ret = ft_putuintmax(printer,
 			n.parts.mant << 1 >> (LDBL_MANT_DIG + 1 - 4 * printer->prec),
 			base_exp[16] == 'p' ? "0123456789abcdef"
-			: "0123456789ABCDEF", NULL)) < 0)
+			: "0123456789ABCDEF")) < 0)
 		return (f_ret);
 	written += f_ret;
 	return (written);
@@ -35,10 +34,10 @@ static int		ft_putldbl_hexapow(t_printer *printer, t_ldbl_cast n,
 	if ((f_ret = printer->write(printer, base_exp + 16, 1)) < 0)
 		return (f_ret);
 	written = f_ret;
-	if ((f_ret = ft_write_uintmax(printer,
+	if ((f_ret = ft_putuintmax(printer,
 			n.parts.exp - LDBL_EXP_BIAS,
 			base_exp[16] == 'p' ? "0123456789abcdef"
-			: "0123456789ABCDEF", NULL)) < 0)
+			: "0123456789ABCDEF")) < 0)
 		return (f_ret);
 	written += f_ret;
 	return (written);
