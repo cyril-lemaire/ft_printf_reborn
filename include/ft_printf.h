@@ -6,7 +6,7 @@
 /*   By: cyrlemai <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/28 13:03:00 by cyrlemai          #+#    #+#             */
-/*   Updated: 2020/03/30 17:04:59 by cyrlemai         ###   ########.fr       */
+/*   Updated: 2020/03/31 17:19:31 by cyrlemai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,8 +67,10 @@ int					ft_tools_putstr(t_printer *printer, const void *str,
 int					ft_tools_write_str(t_printer *printer, const void *str,
 						size_t str_len, t_printer_putstr putstr);
 int					ft_write_pct(t_printer *printer);
-int					ft_putuintmax(t_printer *printer, uintmax_t n,
+size_t				ft_get_uintmax_len(t_printer *printer, uintmax_t n,
 						const char *base);
+int					ft_tools_putuintmax(t_printer *printer, uintmax_t n,
+						size_t n_len, const char *base);
 int					ft_write_uintmax(t_printer *printer, uintmax_t n,
 						const char *base,
 						int (*should_putheader)(uintmax_t n_len,

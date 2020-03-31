@@ -6,7 +6,7 @@
 /*   By: cyrlemai <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/28 12:41:49 by cyrlemai          #+#    #+#             */
-/*   Updated: 2020/03/30 17:04:59 by cyrlemai         ###   ########.fr       */
+/*   Updated: 2020/03/31 15:36:52 by cyrlemai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@
 #include <stdint.h>
 #include <stdio.h>	// Debug only
 
-static size_t		ft_get_uintmax_len(t_printer *printer, uintmax_t n,
+size_t				ft_get_uintmax_len(t_printer *printer, uintmax_t n,
 						const char *base)
 {
 	size_t	res;
@@ -33,34 +33,6 @@ static size_t		ft_get_uintmax_len(t_printer *printer, uintmax_t n,
 	if (printer->flags.apos && res > 3)
 		res += (res - 1) / 3;
 	return (res);
-}
-
-static int			ft_tools_putuintmax(t_printer *printer, uintmax_t n,
-						size_t n_len, const char *base)
-{
-	char		sep;
-	const int	base_len = ft_strlen(base);
-	char		dst[n_len];
-	size_t		i;
-
-	i = 0;
-	if (printer->flags.apos)
-	{
-		sep = ',';
-		while (i < n_len)
-		{
-			if (i % 4 == 3)
-				dst[n_len - ++i] = sep;
-			dst[n_len - ++i] = base[n % base_len];
-			n /= base_len;
-		}
-	}
-	while (i < n_len)
-	{
-		dst[n_len - ++i] = base[n % base_len];
-		n /= base_len;
-	}
-	return (printer->write(printer, dst, n_len));
 }
 
 static void			get_parts_len(t_printer *printer, size_t n_len,
@@ -94,13 +66,32 @@ static void			get_parts_len(t_printer *printer, size_t n_len,
 	parts_len[4] = trailing_spaces;
 }
 
-int					ft_putuintmax(t_printer *printer, uintmax_t n,
-						const char *base)
+int					ft_tools_putuintmax(t_printer *printer, uintmax_t n,
+						size_t n_len, const char *base)
 {
-	size_t	n_len;
+	char		sep;
+	const int	base_len = ft_strlen(base);
+	char		dst[n_len];
+	size_t		i;
 
-	n_len = ft_get_uintmax_len(printer, n, base);
-	return (ft_tools_putuintmax(printer, n, n_len, base));
+	i = 0;
+	if (printer->flags.apos)
+	{
+		sep = ',';
+		while (i < n_len)
+		{
+			if (i % 4 == 3)
+				dst[n_len - ++i] = sep;
+			dst[n_len - ++i] = base[n % base_len];
+			n /= base_len;
+		}
+	}
+	while (i < n_len)
+	{
+		dst[n_len - ++i] = base[n % base_len];
+		n /= base_len;
+	}
+	return (printer->write(printer, dst, n_len));
 }
 
 int					ft_write_uintmax(t_printer *printer, uintmax_t n,

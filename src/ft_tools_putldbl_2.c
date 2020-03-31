@@ -7,21 +7,29 @@ static int		ft_putldbl_hexabody(t_printer *printer, t_ldbl_cast n,
 {
 	int		f_ret;
 	int		written;
+	int		prec_offset;
+	char	*base;
 
-	if ((f_ret = ft_putuintmax(printer, n.parts.mant >> (LDBL_MANT_DIG - 1),
-			base_exp[16] == 'p' ? "0123456789abcdef"
-			: "0123456789ABCDEF")) < 0)
+	base = (base_exp[16] == 'p') ? "0123456789abcdef" : "0123456789ABCDEF"	;
+	if ((f_ret = ft_tools_putuintmax(printer,
+			n.parts.mant >> (LDBL_MANT_DIG - 1), 1, base)) < 0)
 		return (f_ret);
 	written = f_ret;
 	if ((f_ret = printer->write(printer, ".", 1)) < 0)
 		return (f_ret);
 	written += f_ret;
-	if ((f_ret = ft_putuintmax(printer,
-			n.parts.mant << 1 >> (LDBL_MANT_DIG + 1 - 4 * printer->prec),
-			base_exp[16] == 'p' ? "0123456789abcdef"
-			: "0123456789ABCDEF")) < 0)
+	prec_offset = LDBL_MANT_DIG - (4 * printer->prec);
+	if ((f_ret = ft_tools_putuintmax(printer, n.parts.mant << 1
+			>> (prec_offset < 0 ? 0 : prec_offset),
+			printer->prec, base)) < 0)
 		return (f_ret);
 	written += f_ret;
+	if (prec_offset > 0)
+	{
+		if ((f_ret = printer->repeat(printer, '0', -prec_offset / 4)) < 0)
+			return (f_ret);
+		written += f_ret;
+	}
 	return (written);
 }
 
@@ -34,8 +42,8 @@ static int		ft_putldbl_hexapow(t_printer *printer, t_ldbl_cast n,
 	if ((f_ret = printer->write(printer, base_exp + 16, 1)) < 0)
 		return (f_ret);
 	written = f_ret;
-	if ((f_ret = ft_putuintmax(printer,
-			n.parts.exp - LDBL_EXP_BIAS,
+	if ((f_ret = ft_tools_putuintmax(printer,
+			n.parts.exp - LDBL_EXP_BIAS, printer->prec,
 			base_exp[16] == 'p' ? "0123456789abcdef"
 			: "0123456789ABCDEF")) < 0)
 		return (f_ret);
@@ -53,15 +61,17 @@ int				ft_putldbl_hexa(t_printer *printer, t_ldbl_cast n,
 {
 	int		f_ret;
 	int		written;
+	int		right_zeroes;
 
-	if ((f_ret = ft_write_uintmax(printer, n.parts.mant >> (LDBL_MANT_DIG - 1),
-			base_exp[16] == 'p' ? "0123456789abcdef"
-			: "0123456789ABCDEF", NULL)) < 0)
-		return (f_ret);
-	written = f_ret;
+	right_zeroes = (printer->prec > LDBL_MANT_DIG / 4)
+			? LDBL_MANT_DIG / 4 - printer->prec : 0;
+	printer->prec -= right_zeroes;
 	if ((f_ret = ft_putldbl_hexabody(printer, n, base_exp)) < 0)
 		return (f_ret);
-	written += f_ret;
+	written = f_ret;
+	if ((f_ret = printer->repeat(printer, '0', right_zeroes)) < 0)
+		return (f_ret);
+	written = f_ret;
 	if ((f_ret = ft_putldbl_hexapow(printer, n, base_exp)) < 0)
 		return (f_ret);
 	written += f_ret;
