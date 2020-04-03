@@ -6,7 +6,7 @@
 /*   By: cyrlemai <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/15 12:33:35 by cyrlemai          #+#    #+#             */
-/*   Updated: 2019/11/29 15:27:28 by cyrlemai         ###   ########.fr       */
+/*   Updated: 2020/04/03 17:39:06 by cyrlemai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ static char		get_ldbl_sign(t_printer *printer, t_ldbl_cast n)
 **			- 1 separator char:	[e|E|p|P]
 **			- 1 sign char:		[+|-]
 **			- {2,n} digits:		[0-9] ({1,n} for hexa, don't ask me why)
-**				- NOTE: Hexa conversions display BINARY power as hexa.
+**				- NOTE: Hexa conversions display BINARY power as decimal.
 */
 
 static size_t	get_ldbl_real_len(t_printer *printer, t_ldbl_cast n,
@@ -64,7 +64,7 @@ static size_t	get_ldbl_real_len(t_printer *printer, t_ldbl_cast n,
 		while (exponent > 0)
 		{
 			++exp_len;
-			exponent /= (type == hexa) ? 16 : 10;
+			exponent /= 10;
 		}
 		exp_len = 2 + ((exp_len < 2) ? 1 + (type != hexa) : exp_len);
 		n_len += exp_len;
