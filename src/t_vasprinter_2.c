@@ -6,7 +6,7 @@
 /*   By: cyrlemai <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/18 16:17:19 by cyrlemai          #+#    #+#             */
-/*   Updated: 2019/11/18 16:18:39 by cyrlemai         ###   ########.fr       */
+/*   Updated: 2020/04/07 11:52:28 by cyrlemai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,7 +72,7 @@ int				ft_vasprinter_memadd(void *raw_this)
 	return (1);
 }
 
-void			ft_node_shallowdel(void *content, size_t size)
+	void			ft_node_shallowdel(void *content, size_t size)
 {
 	(void)size;
 	free(content);

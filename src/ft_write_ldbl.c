@@ -6,7 +6,7 @@
 /*   By: cyrlemai <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/15 12:33:35 by cyrlemai          #+#    #+#             */
-/*   Updated: 2020/04/03 17:39:06 by cyrlemai         ###   ########.fr       */
+/*   Updated: 2020/04/07 11:52:28 by cyrlemai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,10 @@ static size_t	get_ldbl_real_len(t_printer *printer, t_ldbl_cast n,
 	size_t	exp_len;
 	int		exponent;
 
-	exponent = type == hexa ? n.parts.exp - LDBL_EXP_BIAS : get_base_exp(n, 10);
+	if (type == hexa)
+		exponent = (n.val != 0.0) ? n.parts.exp - LDBL_EXP_BIAS : 0;
+	else
+		exponent = get_base_exp(n, 10);
 	n_len = (type == decimal && exponent > 0) ? exponent + 1 : 1;
 	if (printer->flags.apos)
 		n_len += (n_len - 1) / 3;

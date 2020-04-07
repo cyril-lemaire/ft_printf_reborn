@@ -35,19 +35,19 @@ static int		ft_putldbl_hexapow(t_printer *printer,
 	int			f_ret;
 	int			written;
 	int			exp_len;
-	int			exp_val;
+	int			exp_abs;
 	const char	*base = "0123456789";
 
-	exp_val = (int)ft_abs(n.parts.exp - LDBL_EXP_BIAS);
-	exp_len = ft_get_uintmax_len(printer, exp_val, base);
+	exp_abs = (n.val != 0.0) ? (int)ft_abs(n.parts.exp - LDBL_EXP_BIAS) : 0;
+	exp_len = ft_get_uintmax_len(printer, exp_abs, base);
 	if ((f_ret = printer->write(printer, base_exp + 16, 1)) < 0)
 		return (f_ret);
 	written = f_ret;
 	if ((f_ret = printer->write(printer,
-			(n.parts.exp < LDBL_EXP_BIAS) ? "-" : "+", 1)) < 0)
+			(n.val != 0.0 && n.parts.exp < LDBL_EXP_BIAS) ? "-" : "+", 1)) < 0)
 		return (f_ret);
 	written += f_ret;
-	if ((f_ret = ft_tools_putuintmax(printer, exp_val,
+	if ((f_ret = ft_tools_putuintmax(printer, exp_abs,
 				exp_len < 1 ? 1 : exp_len, base)) < 0)
 		return (f_ret);
 	written += f_ret;
@@ -66,8 +66,9 @@ int				ft_putldbl_hexa(t_printer *printer, t_ldbl_cast n,
 	int		written;
 	int		right_zeroes;
 
-	n.val += 0.5 * ft_intpow(2,
-			n.parts.exp - LDBL_EXP_BIAS - 4 * printer->prec);
+	if (n.val != 0.0)
+		n.val += 0.5 * ft_intpow(2,
+				n.parts.exp - LDBL_EXP_BIAS - 4 * printer->prec);
 	right_zeroes = (int)ft_max(printer->prec - LDBL_MANT_DIG / 4, 0);
 	printer->prec -= right_zeroes;
 	if ((f_ret = ft_putldbl_hexabody(printer, n, base_exp)) < 0)
