@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   t_printer.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cyrlemai <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: cyrlemai <cyrlemai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/11/14 14:25:05 by cyrlemai          #+#    #+#             */
-/*   Updated: 2019/11/14 14:25:39 by cyrlemai         ###   ########.fr       */
+/*   Created: 2020/04/07 19:33:25 by cyrlemai          #+#    #+#             */
+/*   Updated: 2020/04/07 19:34:42 by cyrlemai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,6 +62,6 @@ typedef int		(*t_printer_ft)(t_printer *printer);
 typedef int		(*t_printer_putstr)(t_printer *printer, const void *str,
 					size_t size);
 
-int			ft_printer_init(t_printer *printer, va_list *args);
+int				ft_printer_init(t_printer *printer, va_list *args);
 
 #endif
