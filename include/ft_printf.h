@@ -6,7 +6,7 @@
 /*   By: cyrlemai <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/28 13:03:00 by cyrlemai          #+#    #+#             */
-/*   Updated: 2020/03/31 17:19:31 by cyrlemai         ###   ########.fr       */
+/*   Updated: 2020/04/08 12:04:32 by cyrlemai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,15 +22,15 @@
 # define EWRITE			-2
 # define EFORMAT		-3
 # define LDBL_EXP_DIG 	15
-# define LDBL_EXP_BIAS	((1 << (LDBL_EXP_DIG - 1)) - 1)
+# define LDBL_EXP_BIAS	16383
 # define FT_PRINTF_DEBUG
 # ifdef FT_PRINTF_DEBUG
 #  include <stdio.h>
 #  include <limits.h>
 # endif
-#include <stdio.h>
+# include <stdio.h>
 
-typedef union			s_ldbl_cast
+typedef union			u_ldbl_cast
 {
 	long double			val;
 	struct				s_parts
@@ -41,12 +41,12 @@ typedef union			s_ldbl_cast
 	}					parts;
 }						t_ldbl_cast;
 
-typedef enum	e_ldbl_type
+typedef enum			e_ldbl_type
 {
 	decimal,
 	scientific,
 	hexa
-}				t_lbdl_type;
+}						t_lbdl_type;
 
 typedef int				(*t_putldbl)(t_printer *printer, t_ldbl_cast n,
 							const char *base_exp);
@@ -117,10 +117,5 @@ int					ft_putldbl_hexa(t_printer *printer, t_ldbl_cast n,
 long double			get_ldbl_arg(t_printer *printer);
 int					ft_tools_putexp(t_printer *printer, int exp,
 						const char *base_exp);
-
-/*
-** int			ft_asprintf(char **dstp, const char *format, ...);
-** int			ft_vasprintf(char **dstp, const char *format, va_list args);
-*/
 
 #endif
