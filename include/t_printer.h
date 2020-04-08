@@ -6,7 +6,7 @@
 /*   By: cyrlemai <cyrlemai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/04/07 19:33:25 by cyrlemai          #+#    #+#             */
-/*   Updated: 2020/04/07 19:34:42 by cyrlemai         ###   ########.fr       */
+/*   Updated: 2020/04/08 12:13:15 by cyrlemai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ typedef struct	s_printer
 	int					width;
 	char				type;
 	char				*header;
-	va_list*			args;
+	va_list				*args;
 	t_printer_write		write;
 	t_printer_repeat	repeat;
 	t_printer_flush		flush;

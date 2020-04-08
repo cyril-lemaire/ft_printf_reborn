@@ -6,7 +6,7 @@
 /*   By: cyrlemai <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/28 13:03:00 by cyrlemai          #+#    #+#             */
-/*   Updated: 2020/04/08 12:04:32 by cyrlemai         ###   ########.fr       */
+/*   Updated: 2020/04/08 12:21:39 by cyrlemai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@
 # endif
 # include <stdio.h>
 
-typedef union			u_ldbl_cast
+typedef union		u_ldbl_cast
 {
 	long double			val;
 	struct				s_parts
@@ -41,15 +41,15 @@ typedef union			u_ldbl_cast
 	}					parts;
 }						t_ldbl_cast;
 
-typedef enum			e_ldbl_type
+typedef enum		e_ldbl_type
 {
 	decimal,
 	scientific,
 	hexa
-}						t_lbdl_type;
+}					t_lbdl_type;
 
-typedef int				(*t_putldbl)(t_printer *printer, t_ldbl_cast n,
-							const char *base_exp);
+typedef int			(*t_putldbl)(t_printer *printer, t_ldbl_cast n,
+						const char *base_exp);
 
 int					ft_printf(const char *format, ...);
 int					ft_vprintf(const char *format, va_list args);

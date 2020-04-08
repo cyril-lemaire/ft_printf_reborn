@@ -6,7 +6,7 @@
 /*   By: cyrlemai <cyrlemai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/19 12:49:41 by cyrlemai          #+#    #+#             */
-/*   Updated: 2019/11/19 12:49:45 by cyrlemai         ###   ########.fr       */
+/*   Updated: 2020/04/08 12:29:50 by cyrlemai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,20 +21,20 @@ typedef int		(*t_vasprinter_ft)(void *raw_this);
 typedef struct	s_vasprinter
 {
 	t_printer			super;
-	t_list*				mem_head;
-	t_list*				mem;
+	t_list				*mem_head;
+	t_list				*mem;
 	size_t				index;
 	unsigned int		mem_size;
-	char**				dstp;
+	char				**dstp;
 	t_vasprinter_ft		private_memadd;
 	t_vasprinter_del	del;
 }				t_vasprinter;
 
-t_vasprinter*		ft_vasprinter_new(char **dst, va_list *args);
-int					ft_vasprinter_init(t_vasprinter *printer, char **dstp,
-						va_list *args);
-void				ft_vasprinter_del(void *raw_this);
-int					ft_vasprinter_memadd(void *raw_this);
-void				ft_node_shallowdel(void *content, size_t size);
+t_vasprinter	*ft_vasprinter_new(char **dst, va_list *args);
+int				ft_vasprinter_init(t_vasprinter *printer, char **dstp,
+					va_list *args);
+void			ft_vasprinter_del(void *raw_this);
+int				ft_vasprinter_memadd(void *raw_this);
+void			ft_node_shallowdel(void *content, size_t size);
 
 #endif
