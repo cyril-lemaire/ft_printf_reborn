@@ -6,7 +6,7 @@
 /*   By: clemaire <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/17 12:46:42 by clemaire          #+#    #+#             */
-/*   Updated: 2019/11/16 17:20:17 by cyrlemai         ###   ########.fr       */
+/*   Updated: 2020/04/08 12:35:41 by cyrlemai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,7 +103,7 @@ char			*ft_stradd(const char *dest, const char *src);
 char			*ft_stracat(char *dest, const char *src);
 size_t			ft_wcslen(const wchar_t *s);
 int				ft_wctomb(char *s, wchar_t wchar);
-int				ft_wclen(wchar_t);
+int				ft_wclen(wchar_t wc);
 long double		ft_intpow(long double nb, int power);
 
 #endif
