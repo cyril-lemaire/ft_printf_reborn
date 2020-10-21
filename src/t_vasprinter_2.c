@@ -40,7 +40,7 @@ void			ft_vasprinter_del(void *raw_this)
 	}
 }
 
-static t_list*	ft_vasprinter_mem_new(void)
+static t_list	*ft_vasprinter_mem_new(void)
 {
 	t_list	*new_node;
 
@@ -72,7 +72,7 @@ int				ft_vasprinter_memadd(void *raw_this)
 	return (1);
 }
 
-	void			ft_node_shallowdel(void *content, size_t size)
+void			ft_node_shallowdel(void *content, size_t size)
 {
 	(void)size;
 	free(content);

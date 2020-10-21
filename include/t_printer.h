@@ -23,15 +23,15 @@ typedef int		(*t_printer_flush)(void *raw_this);
 
 typedef struct	s_flags
 {
-	unsigned		minus : 1;
-	unsigned		plus : 1;
-	unsigned		zero : 1;
-	unsigned		space : 1;
-	unsigned		hash : 1;
-	unsigned		prec : 1;
-	unsigned		width : 1;
-	unsigned		apos : 1;
-	struct			s_size
+	unsigned	minus : 1;
+	unsigned	plus : 1;
+	unsigned	zero : 1;
+	unsigned	space : 1;
+	unsigned	hash : 1;
+	unsigned	prec : 1;
+	unsigned	width : 1;
+	unsigned	apos : 1;
+	struct		s_size
 	{
 		unsigned	hh : 1;
 		unsigned	h : 1;
@@ -41,7 +41,7 @@ typedef struct	s_flags
 		unsigned	j : 1;
 		unsigned	z : 1;
 		unsigned	t : 1;
-	}				size;
+	}			size;
 }				t_flags;
 
 typedef struct	s_printer
@@ -61,7 +61,6 @@ typedef struct	s_printer
 typedef int		(*t_printer_ft)(t_printer *printer);
 typedef int		(*t_printer_putstr)(t_printer *printer, const void *str,
 					size_t size);
-
 int				ft_printer_init(t_printer *printer, va_list *args);
 
 #endif

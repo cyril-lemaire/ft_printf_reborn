@@ -15,7 +15,6 @@
 #include <unistd.h>
 #include <stdlib.h>
 #include <stdint.h>
-#include <stdio.h>	// Debug only
 
 size_t				ft_get_uintmax_len(t_printer *printer, uintmax_t n,
 						const char *base)
@@ -124,31 +123,3 @@ int					ft_write_uintmax(t_printer *printer, uintmax_t n,
 	res += f_ret;
 	return (res);
 }
-
-/*
-int					ft_write_uintmax(t_printer *printer, uintmax_t n,
-						const char *header, const char *base)
-{
-	const char  	filler =  (printer->flags.prec || printer->flags.minus
-							|| !printer->flags.zero) ? ' ' : '0';
-	size_t			filler_len;
-	size_t			n_len;
-	size_t			header_len;
-	int				ret_val;
-
-	n_len = ft_get_uintmax_len(printer, n, base);
-	header_len = ft_strlen(header);
-	filler_len = (printer->flags.width && (size_t)printer->width > n_len
-			+ header_len) ? printer->width - n_len - header_len : 0;
-    ret_val = 0;
-	if (filler_len > 0 && filler == ' ' && !printer->flags.minus)
-		ret_val += printer->repeat(printer, filler, filler_len);
-	ret_val += printer->write(printer, header, header_len);
-	if (filler_len > 0 && filler == '0')
-		ret_val += printer->repeat(printer, filler, filler_len);
-	ret_val += ft_tools_putuintmax(printer, n, n_len, base);
-	if (filler_len > 0 && printer->flags.minus)
-		ret_val += printer->repeat(printer, filler, filler_len);
-	return (ret_val);
-}
-*/
