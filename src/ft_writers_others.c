@@ -6,7 +6,7 @@
 /*   By: cyrlemai <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/28 13:07:47 by cyrlemai          #+#    #+#             */
-/*   Updated: 2019/11/13 17:01:29 by cyrlemai         ###   ########.fr       */
+/*   Updated: 2021/04/06 01:03:17 by cyrlemai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,10 +24,14 @@ int			ft_write_up_b(t_printer *printer)
 
 	arg = va_arg(*printer->args, void*);
 	if (arg == NULL)
+	{
 		return (ft_tools_write_str(printer, "(null)", sizeof("(null)") - 1,
-					ft_tools_putstr));
+				ft_tools_putstr));
+	}
 	if (printer->flags.width && printer->width > 0)
+	{
 		return (printer->write(printer, arg, printer->width));
+	}
 	return (0);
 }
 

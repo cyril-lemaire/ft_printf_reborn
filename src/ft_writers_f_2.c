@@ -6,7 +6,7 @@
 /*   By: cyrlemai <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/18 15:20:03 by cyrlemai          #+#    #+#             */
-/*   Updated: 2020/04/03 17:35:03 by cyrlemai         ###   ########.fr       */
+/*   Updated: 2021/04/06 00:48:06 by cyrlemai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,30 +15,22 @@
 #include <float.h>
 #include <stdio.h>
 
-int ft_tools_hexa_def_prec(t_ldbl_cast n)
+int				ft_tools_hexa_def_prec(t_ldbl_cast n)
 {
 	int				prec;
 	unsigned long	mask;
 	int				right_offset;
 
 	prec = LDBL_MANT_DIG / 4;
-//	printf("%Lf mantissa %lx\n", n.val, n.parts.mant << 1); fflush(stdout);
 	mask = 0xF;
 	right_offset = (4 - (LDBL_MANT_DIG - 1) % 4) % 4;
-//	printf("%Lf right mask %lx, mant & mask %lx\n",
-//			n.val,
-//			mask >> right_offset,
-//			n.parts.mant & (mask >> right_offset)); fflush(stdout);
 	if ((n.parts.mant & (mask >> right_offset)) != 0)
 		return (prec);
 	--prec;
 	mask <<= 4 - right_offset;
 	while (prec > 0 && (n.parts.mant & mask) == 0)
 	{
-//		printf("mask %lx, mant & mask %lx\n",
-//			mask,
-//			n.parts.mant & (mask >> right_offset)); fflush(stdout);
-		--prec;
+		prec;
 		mask <<= 4;
 	}
 	return (prec);

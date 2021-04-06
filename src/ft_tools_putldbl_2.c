@@ -7,7 +7,7 @@ static int		ft_putldbl_hexabody(t_printer *printer, t_ldbl_cast n,
 {
 	int		f_ret;
 	int		written;
-	int		prec_offset;
+	int		prec_d;
 	char	*base;
 
 	base = (base_exp[16] == 'p') ? "0123456789abcdef" : "0123456789ABCDEF";
@@ -20,8 +20,8 @@ static int		ft_putldbl_hexabody(t_printer *printer, t_ldbl_cast n,
 		if ((f_ret = printer->write(printer, ".", 1)) < 0)
 			return (f_ret);
 		written += f_ret;
-		prec_offset = LDBL_MANT_DIG - (4 * printer->prec);
-		if ((f_ret = ft_tools_putuintmax(printer, n.parts.mant << 1 >> prec_offset,
+		prec_d = LDBL_MANT_DIG - (4 * printer->prec);
+		if ((f_ret = ft_tools_putuintmax(printer, n.parts.mant << 1 >> prec_d,
 				printer->prec, base)) < 0)
 			return (f_ret);
 		written += f_ret;

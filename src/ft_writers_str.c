@@ -6,14 +6,13 @@
 /*   By: cyrlemai <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/22 16:51:47 by cyrlemai          #+#    #+#             */
-/*   Updated: 2019/11/11 01:30:49 by cyrlemai         ###   ########.fr       */
+/*   Updated: 2021/04/06 12:29:06 by cyrlemai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
 #include "libft.h"
 #include <stdint.h>
-#include <stdio.h>	//debug only
 
 static int	ft_tools_putwstr(t_printer *printer, const void *str, size_t size)
 {
@@ -93,10 +92,10 @@ int			ft_write_s(t_printer *printer)
 
 int			ft_write_up_s(t_printer *printer)
 {
-	wchar_t				*arg;
-	size_t				len;
-	size_t				i;
-	int					wchar_len;
+	wchar_t		*arg;
+	size_t		len;
+	size_t		i;
+	int			wchar_len;
 
 	arg = va_arg(*printer->args, wchar_t*);
 	if (arg == NULL)

@@ -6,7 +6,7 @@
 /*   By: cyrlemai <cyrlemai@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/19 12:50:13 by cyrlemai          #+#    #+#             */
-/*   Updated: 2019/11/19 12:50:15 by cyrlemai         ###   ########.fr       */
+/*   Updated: 2021/04/06 10:34:45 by cyrlemai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,9 +14,9 @@
 #include "t_vdprinter.h"
 #include "stdlib.h"
 
-t_vdprinter*	ft_vdprinter_new(int fd, va_list *args)
+t_vdprinter		*ft_vdprinter_new(int fd, va_list *args)
 {
-	t_vdprinter	*printer;
+	t_vdprinter *printer;
 
 	printer = (t_vdprinter*)malloc(sizeof(t_vdprinter));
 	if (!ft_vdprinter_init(printer, fd, args))

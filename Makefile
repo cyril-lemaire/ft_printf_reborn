@@ -6,7 +6,7 @@
 #    By: clemaire <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/11/13 16:35:50 by clemaire          #+#    #+#              #
-#    Updated: 2019/11/19 12:49:27 by cyrlemai         ###   ########.fr        #
+#    Updated: 2021/04/06 12:31:06 by cyrlemai         ###   ########.fr        #
 #                                                                              #
 #******************************************************************************#
 
@@ -63,16 +63,6 @@ $(OBJ_DIR)/%.o: $(SRC_DIR)/%.c | $(OBJ_DIR)
 $(NAME): $(LIBFT_DIR)/$(LIBFT_NAME) $(OBJ)
 	$(CP) $< $@
 	$(AR_RCS) $@ $(OBJ)
-
-alt: $(LIBFT_DIR)/$(LIBFT_NAME) $(PRINTF_NAME)
-	libtool --mode=link cc -static -o $(NAME) $^
-
-alt2: $(LIBFT_DIR)/$(LIBFT_NAME) $(PRINTF_NAME)
-	ar -rcT $(NAME) $^
-
-alt3: $(LIBFT_DIR)/$(LBIFT_NAME) $(OBJ)
-	$(CP) $< $(NAME)
-	$(AR_RCS) $(NAME) $(OBJ)
 
 $(PRINTF_NAME): $(OBJ)
 	$(AR_RCS) $@ $?

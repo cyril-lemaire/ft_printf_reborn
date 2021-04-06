@@ -6,7 +6,7 @@
 /*   By: cyrlemai <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/15 12:33:35 by cyrlemai          #+#    #+#             */
-/*   Updated: 2020/04/07 11:52:28 by cyrlemai         ###   ########.fr       */
+/*   Updated: 2021/04/06 00:01:15 by cyrlemai         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -136,23 +136,18 @@ int				ft_write_ldbl_real(t_printer *printer, t_ldbl_cast n,
 	f_ret = 0;
 	if ((f_ret = printer->repeat(printer, ' ', parts_len[0])) < 0)
 		return (f_ret);
-//	printf("leading spaces len: %d (expected %zu)\n", f_ret, parts_len[0]); fflush(stdout);
 	res += f_ret;
 	if ((f_ret = ft_tools_putheader(printer, n, parts_len[1])) < 0)
 		return (f_ret);
-//	printf("header len: %d (expected %zu)\n", f_ret, parts_len[1]); fflush(stdout);
 	res += f_ret;
 	if ((f_ret = printer->repeat(printer, '0', parts_len[2])) < 0)
 		return (f_ret);
-//	printf("leading zeroes: %d (expected %zu)\n", f_ret, parts_len[2]); fflush(stdout);
 	res += f_ret;
 	if ((f_ret = ft_putldbl(printer, n, base_exp, conv_type)) < 0)
 		return (f_ret);
-//	printf("n len: %d (expected %zu)\n", f_ret, parts_len[3]); fflush(stdout);
 	res += f_ret;
 	if ((f_ret = printer->repeat(printer, ' ', parts_len[4])) < 0)
 		return (f_ret);
-//	printf("trailing spaces: %d (expected %zu)\n", f_ret, parts_len[4]); fflush(stdout);
 	res += f_ret;
 	return (res);
 }
